@@ -56,73 +56,68 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
+    // Core
+    implementation(libs.androidx.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
 
     // Ui
-    implementation("com.google.android.material:material:1.11.0")
+    implementation(libs.androidx.material)
 
     // Compose
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.runtime:runtime")
-    implementation("androidx.activity:activity-compose:1.7.2")
-    implementation(platform("androidx.compose:compose-bom:2022.10.00"))
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.runtime)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.tooling.preview)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
 
     // UI Tests
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
-
-    // Android Studio Preview support
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    implementation("androidx.compose:compose-bom:2024.02.01")
-    androidTestImplementation("androidx.compose:compose-bom:2024.02.01")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.test.manifest)
 
     // ViewModel
-    implementation("androidx.activity:activity-ktx:1.8.2")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     // Images
-    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation(libs.glide)
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.44")
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.jetbrains.kotlinx.coroutines.android)
+    testImplementation(libs.jetbrains.kotlinx.coroutines.test)
 
     // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation(libs.retrofit)
+    implementation(libs.retrofit2.converter.moshi)
+    implementation(libs.retrofit2.converter.gson)
 
     // OkHttp
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
+    implementation(libs.logging.interceptor)
+    implementation(libs.okhttp)
 
     // Gson
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation(libs.gson)
 
     // Testing
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("io.mockk:mockk:1.12.4")
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    testImplementation("org.robolectric:robolectric:4.11.1")
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.junit.jupiter.api)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.robolectric)
 
     // Room
-    implementation("androidx.room:room-runtime:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
-    implementation("androidx.room:room-paging:2.6.1")
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.paging)
 }
