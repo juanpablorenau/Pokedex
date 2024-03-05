@@ -1,7 +1,0 @@
-[versions]
-ktx = "1.12.0"
-
-[libraries]
-androidx-ktx =  { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
-
-[plugins]
