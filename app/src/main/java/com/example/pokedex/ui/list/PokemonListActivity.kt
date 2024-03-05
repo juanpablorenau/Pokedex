@@ -16,15 +16,14 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PokemonListActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { PokedexTheme { PokemonListScreen() } }
+        setContent { PokedexTheme { pokemonListScreen() } }
     }
 
     @Preview(showBackground = true)
     @Composable
-    private fun PokemonListScreen() {
+    private fun pokemonListScreen() {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
