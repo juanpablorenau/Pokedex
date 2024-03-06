@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class PokedexRepositoryImpl(
-    private val remoteDataSource: PokedexRemoteDataSource
+    private val remoteDataSource: PokedexRemoteDataSource,
 ) : PokedexRepository {
     override fun getPokemonInfo(name: String): Flow<PokemonInfo> =
-        remoteDataSource.getPokemon(name).map { it.toDomainModel() }
+        remoteDataSource.getPokemonInfo(name).map { it.toDomainModel() }
 }

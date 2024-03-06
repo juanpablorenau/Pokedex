@@ -72,6 +72,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.tooling.preview)
+    implementation(project(":domain"))
     androidTestImplementation(platform(libs.androidx.compose.bom))
 
     // UI Tests

@@ -16,6 +16,10 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes {
         debug {
             buildConfigField("String", "API_BASE_URL", "https://pokeapi.co/api/v2/")
