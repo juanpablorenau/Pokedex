@@ -44,6 +44,7 @@ dependencies {
     // Core
     implementation(libs.androidx.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(project(":domain"))
 
     // Hilt
     implementation(libs.hilt.android)
@@ -66,4 +67,13 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.paging)
+
+    // Testing
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.junit.jupiter.api)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.robolectric)
 }
