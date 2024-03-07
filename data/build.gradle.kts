@@ -1,8 +1,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    kotlin("kapt")
 }
 
 android {
@@ -22,11 +22,11 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "API_BASE_URL", "https://pokeapi.co/api/v2/")
+            buildConfigField("String", "API_BASE_URL", "\"https://pokeapi.co/api/v2/\"")
         }
 
         release {
-            buildConfigField("String", "API_BASE_URL", "https://pokeapi.co/api/v2/")
+            buildConfigField("String", "API_BASE_URL", "\"https://pokeapi.co/api/v2/\"")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -45,10 +45,12 @@ android {
 
 dependencies {
 
+    //Module
+    implementation(project(":domain"))
+
     // Core
     implementation(libs.androidx.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(project(":domain"))
 
     // Hilt
     implementation(libs.hilt.android)
@@ -65,12 +67,6 @@ dependencies {
     // OkHttp
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
-
-    // Room
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    kapt(libs.androidx.room.compiler)
-    implementation(libs.androidx.room.paging)
 
     // Testing
     androidTestImplementation(libs.androidx.ui.test.junit4)

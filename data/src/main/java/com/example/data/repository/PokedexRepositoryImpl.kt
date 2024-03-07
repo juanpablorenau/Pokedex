@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.map
 class PokedexRepositoryImpl(
     private val remoteDataSource: PokedexRemoteDataSource,
 ) : PokedexRepository {
+
     override fun getPokemonInfo(name: String): Flow<PokemonInfo> =
         remoteDataSource.getPokemonInfo(name).map { it.toDomainModel() }
 }

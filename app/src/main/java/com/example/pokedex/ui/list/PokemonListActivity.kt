@@ -1,9 +1,9 @@
 package com.example.pokedex.ui.list
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +16,7 @@ import com.example.pokedex.theme.PokedexTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PokemonListActivity : ComponentActivity() {
+class PokemonListActivity : AppCompatActivity() {
 
     private val viewModel: PokemonListViewModel by viewModels()
 

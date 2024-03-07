@@ -1,5 +1,6 @@
 package com.example.data.di
 
+import com.example.data.BuildConfig
 import com.example.data.source.remote.api.PokedexApi
 import dagger.Module
 import dagger.Provides
@@ -14,28 +15,29 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 internal object ApiModule {
-    @Singleton
     @Provides
-    fun providesHttpLoggingInterceptor() = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
+    @Singleton
+    fun providesHttpLoggingInterceptor(): HttpLoggingInterceptor =
+        HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
 
-    @Singleton
     @Provides
-    fun providesOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor) =
+    @Singleton
+    fun providesOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
         OkHttpClient
             .Builder()
             .addInterceptor(httpLoggingInterceptor)
             .build()
 
-    @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient) =
+    @Singleton
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(BuildConfig.API_BASE_URL)
             .client(okHttpClient)
             .build()
 
-    @Singleton
     @Provides
-    fun providePokedexApi(retrofit: Retrofit) = retrofit.create(PokedexApi::class.java)
+    @Singleton
+    fun providePokedexApi(retrofit: Retrofit): PokedexApi = retrofit.create(PokedexApi::class.java)
 }

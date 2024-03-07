@@ -1,8 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    kotlin("kapt")
 }
 
 android {
@@ -45,7 +45,7 @@ android {
         jvmTarget = "1.8"
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.9"
+        kotlinCompilerExtensionVersion = "1.5.0"
     }
     packaging {
         resources {
@@ -55,6 +55,9 @@ android {
 }
 
 dependencies {
+
+    //Module
+    implementation(project(":domain"))
 
     // Core
     implementation(libs.androidx.ktx)
@@ -72,7 +75,6 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.tooling.preview)
-    implementation(project(":domain"))
     androidTestImplementation(platform(libs.androidx.compose.bom))
 
     // UI Tests

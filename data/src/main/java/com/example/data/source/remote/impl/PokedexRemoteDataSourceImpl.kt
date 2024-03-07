@@ -12,7 +12,7 @@ class PokedexRemoteDataSourceImpl(private val api: PokedexApi) : PokedexRemoteDa
         flow {
             with(api.getPokemonInfo(name).execute()) {
                 if (isSuccessful) body()?.let { emit(it) }
-                else throw RuntimeException("Error: ${message()}")
+                else throw Exception("Error: ${message()}")
             }
         }
 }
