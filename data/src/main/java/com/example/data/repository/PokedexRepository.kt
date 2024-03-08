@@ -1,7 +1,7 @@
 package com.example.data.repository
 
 
-import com.example.domain.model.entities.PokemonInfo
+import com.example.model.PokemonInfo
 import kotlinx.coroutines.flow.Flow
 
 interface PokedexRepository {

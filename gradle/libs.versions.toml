@@ -29,6 +29,7 @@ runtime = "1.6.2"
 activity-compose = "1.8.2"
 ui-graphics = "1.6.2"
 ui-tooling = "1.6.2"
+jetbrains-kotlin-jvm = "1.9.0"
 
 [libraries]
 
@@ -100,3 +101,4 @@ androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "ro
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room-runtime" }
 
 [plugins]
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin-jvm" }

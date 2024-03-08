@@ -1,8 +1,7 @@
 package com.example.domain.di
 
-import com.example.domain.repository.PokedexRepository
+import com.example.data.repository.PokedexRepository
 import com.example.domain.usecase.GetPokemonInfoUseCase
-import com.example.domain.usecase.impl.GetPokemonInfoUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,5 +13,5 @@ class UseCaseModule {
 
     @Provides
     fun providesGetPokemonInfoUseCase(repository: PokedexRepository): GetPokemonInfoUseCase =
-        GetPokemonInfoUseCaseImpl(repository)
+        GetPokemonInfoUseCase(repository)
 }

@@ -1,8 +1,8 @@
 package com.example.data.di
 
-import com.example.data.repository.PokedexRepositoryImpl
+import com.example.data.repository.PokedexRepository
+import com.example.data.repository.impl.PokedexRepositoryImpl
 import com.example.data.source.remote.PokedexRemoteDataSource
-import com.example.domain.repository.PokedexRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

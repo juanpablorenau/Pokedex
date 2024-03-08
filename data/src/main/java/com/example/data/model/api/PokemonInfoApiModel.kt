@@ -1,10 +1,11 @@
 package com.example.data.model.api
 
-import com.example.domain.model.entities.PokemonInfo
+import com.example.model.PokemonInfo
+import com.google.gson.annotations.SerializedName
 
 data class PokemonInfoApiModel(
-    val id: String,
-    val name: String,
+    @SerializedName("id") val id: String,
+    @SerializedName("name") val name: String,
 )
 
 fun PokemonInfoApiModel.toDomainModel() =

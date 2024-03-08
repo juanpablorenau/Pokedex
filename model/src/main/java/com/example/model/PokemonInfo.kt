@@ -1,4 +1,4 @@
-package com.example.domain.model.entities
+package com.example.model
 
 data class PokemonInfo(
     val id: String,

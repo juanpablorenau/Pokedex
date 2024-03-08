@@ -1,9 +1,9 @@
-package com.example.data.repository
+package com.example.data.repository.impl
 
 import com.example.data.model.api.toDomainModel
+import com.example.data.repository.PokedexRepository
 import com.example.data.source.remote.PokedexRemoteDataSource
-import com.example.domain.model.entities.PokemonInfo
-import com.example.domain.repository.PokedexRepository
+import com.example.model.PokemonInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
