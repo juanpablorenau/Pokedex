@@ -1,7 +1,9 @@
 package com.example.data.di
 
-import com.example.data.repository.PokedexRepository
-import com.example.data.repository.impl.PokedexRepositoryImpl
+import com.example.data.repository.PokemonInfoRepository
+import com.example.data.repository.PokemonRepository
+import com.example.data.repository.impl.PokemonInfoRepositoryImpl
+import com.example.data.repository.impl.PokemonRepositoryImpl
 import com.example.data.source.remote.PokedexRemoteDataSource
 import dagger.Module
 import dagger.Provides
@@ -14,9 +16,14 @@ import kotlinx.coroutines.CoroutineDispatcher
 class RepositoryModule {
 
     @Provides
-    fun providesPokedexRepository(
+    fun providesPokemonRepository(
         pokedexRemoteDataSource: PokedexRemoteDataSource,
         dispatcher: CoroutineDispatcher,
-    ): PokedexRepository =
-        PokedexRepositoryImpl(pokedexRemoteDataSource, dispatcher)
+    ): PokemonRepository = PokemonRepositoryImpl(pokedexRemoteDataSource, dispatcher)
+
+    @Provides
+    fun providesPokemonInfoRepository(
+        pokedexRemoteDataSource: PokedexRemoteDataSource,
+        dispatcher: CoroutineDispatcher,
+    ): PokemonInfoRepository = PokemonInfoRepositoryImpl(pokedexRemoteDataSource, dispatcher)
 }

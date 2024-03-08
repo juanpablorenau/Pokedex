@@ -1,5 +1,6 @@
 package com.example.data.source.remote.impl
 
+import com.example.data.model.api.PokemonApiModel
 import com.example.data.model.api.PokemonInfoApiModel
 import com.example.data.source.remote.PokedexRemoteDataSource
 import com.example.data.source.remote.api.PokedexApi
@@ -11,6 +12,8 @@ class PokedexRemoteDataSourceImpl(
     private val api: PokedexApi,
     private val dispatcher: CoroutineDispatcher,
 ) : PokedexRemoteDataSource {
+    override suspend fun getPokemons(): List<PokemonApiModel> =
+        withContext(dispatcher) { apiHandler { api.getPokemons() } }
 
     override suspend fun getPokemonInfo(name: String): PokemonInfoApiModel =
         withContext(dispatcher) { apiHandler { api.getPokemonInfo(name) } }
