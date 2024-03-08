@@ -57,6 +57,7 @@ android {
 dependencies {
 
     //Module
+    implementation(project(":model"))
     implementation(project(":domain"))
 
     // Core

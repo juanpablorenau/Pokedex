@@ -35,6 +35,10 @@ android {
 
 dependencies {
 
+    //Module
+    implementation(project(":model"))
+    implementation(project(":data"))
+
     // Core
     implementation(libs.androidx.ktx)
     implementation(libs.androidx.appcompat)

@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface PokedexRemoteDataSource {
 
-    fun getPokemonInfo(name: String): Flow<PokemonInfoApiModel>
+    suspend fun getPokemonInfo(name: String): PokemonInfoApiModel
 }
