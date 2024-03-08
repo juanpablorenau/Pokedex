@@ -1,8 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    kotlin("kapt")
 }
 
 android {
@@ -45,7 +45,7 @@ android {
         jvmTarget = "1.8"
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.9"
+        kotlinCompilerExtensionVersion = "1.5.0"
     }
     packaging {
         resources {
@@ -55,6 +55,9 @@ android {
 }
 
 dependencies {
+
+    //Module
+    implementation(project(":domain"))
 
     // Core
     implementation(libs.androidx.ktx)
@@ -77,6 +80,7 @@ dependencies {
     // UI Tests
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.test.manifest)
+    debugImplementation(libs.androidx.ui.tooling)
 
     // ViewModel
     implementation(libs.androidx.activity.ktx)
@@ -88,20 +92,14 @@ dependencies {
     // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+    implementation(libs.dagger)
+    implementation(libs.dagger.android.support)
+    kapt(libs.dagger.compiler)
 
     // Coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.jetbrains.kotlinx.coroutines.android)
     testImplementation(libs.jetbrains.kotlinx.coroutines.test)
-
-    // Retrofit
-    implementation(libs.retrofit)
-    implementation(libs.retrofit2.converter.moshi)
-    implementation(libs.retrofit2.converter.gson)
-
-    // OkHttp
-    implementation(libs.logging.interceptor)
-    implementation(libs.okhttp)
 
     // Gson
     implementation(libs.gson)
@@ -114,10 +112,4 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     testImplementation(libs.robolectric)
-
-    // Room
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    kapt(libs.androidx.room.compiler)
-    implementation(libs.androidx.room.paging)
 }
