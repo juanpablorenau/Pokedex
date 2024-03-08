@@ -3,16 +3,15 @@ package com.example.data.source.remote.impl
 import com.example.data.model.api.PokemonInfoApiModel
 import com.example.data.source.remote.PokedexRemoteDataSource
 import com.example.data.source.remote.api.PokedexApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import com.example.data.utils.apiHandler
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 
-class PokedexRemoteDataSourceImpl(private val api: PokedexApi) : PokedexRemoteDataSource {
+class PokedexRemoteDataSourceImpl(
+    private val api: PokedexApi,
+    private val dispatcher: CoroutineDispatcher,
+) : PokedexRemoteDataSource {
 
-    override fun getPokemonInfo(name: String): Flow<PokemonInfoApiModel> =
-        flow {
-            with(api.getPokemonInfo(name).execute()) {
-                if (isSuccessful) body()?.let { emit(it) }
-                else throw Exception("Error: ${message()}")
-            }
-        }
+    override suspend fun getPokemonInfo(name: String): PokemonInfoApiModel =
+        withContext(dispatcher) { apiHandler { api.getPokemonInfo(name) } }
 }
