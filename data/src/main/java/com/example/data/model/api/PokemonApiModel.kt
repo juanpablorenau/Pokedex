@@ -1,6 +1,6 @@
 package com.example.data.model.api
 
-import com.example.model.Pokemon
+import com.example.model.entities.Pokemon
 import com.google.gson.annotations.SerializedName
 
 data class PokemonApiModel(

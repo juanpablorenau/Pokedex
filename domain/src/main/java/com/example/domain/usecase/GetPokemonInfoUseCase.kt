@@ -1,7 +1,7 @@
 package com.example.domain.usecase
 
 import com.example.data.repository.PokemonInfoRepository
-import com.example.model.PokemonInfo
+import com.example.model.entities.PokemonInfo
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
