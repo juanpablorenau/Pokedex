@@ -4,16 +4,14 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.model.entities.Pokemon
 import com.example.pokedex.theme.PokedexTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,12 +29,16 @@ class PokemonsActivity : AppCompatActivity() {
     @Composable
     private fun PokemonListScreen() {
         val uiState by viewModel.uiState.collectAsState()
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(text = ("Hello World!"))
+
+        LazyColumn {
+            items(uiState.items) { pokemon ->
+                ItemPokemon(pokemon)
+            }
         }
+    }
+
+    @Composable
+    fun ItemPokemon(pokemon: Pokemon) {
+        Text(text = pokemon.name)
     }
 }
