@@ -1,14 +1,11 @@
 package com.example.domain.usecase
 
-import com.example.data.repository.PokedexRepository
+import com.example.data.repository.PokemonInfoRepository
 import com.example.model.PokemonInfo
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onCompletion
 import javax.inject.Inject
 
-class GetPokemonInfoUseCase @Inject constructor(private val repository: PokedexRepository) {
+class GetPokemonInfoUseCase @Inject constructor(private val repository: PokemonInfoRepository) {
 
     fun invoke(name: String): Flow<PokemonInfo> =
         repository.getPokemonInfo(name)
