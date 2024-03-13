@@ -88,7 +88,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     // Images
-    implementation(libs.glide)
+    implementation(libs.coil.compose)
+    implementation(libs.androidx.palette.ktx)
 
     // Hilt
     implementation(libs.hilt.android)

@@ -1,10 +1,10 @@
 [versions]
 androidx-junit = "1.1.5"
+coil-compose = "2.5.0"
 compose-bom = "2024.02.01"
 converter-gson = "2.9.0"
 converter-moshi = "2.9.0"
 espresso-core = "3.5.1"
-glide = "4.16.0"
 gson = "2.10.1"
 hilt-android = "2.48"
 hilt-android-compiler = "2.48"
@@ -20,6 +20,7 @@ logging-interceptor = "4.12.0"
 material = "1.11.0"
 mockk = "1.12.4"
 okhttp = "5.0.0-alpha.2"
+palette-ktx = "1.0.0"
 retrofit = "2.9.0"
 robolectric = "4.11.1"
 room-runtime = "2.6.1"
@@ -60,7 +61,8 @@ androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle-runtime-ktx" }
 
 # Images
-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
+androidx-palette-ktx = { module = "androidx.palette:palette-ktx", version.ref = "palette-ktx" }
 
 # Hilt
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
