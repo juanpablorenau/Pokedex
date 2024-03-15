@@ -1,6 +1,5 @@
 package com.example.data.utils
 
-import android.util.Log
 import com.example.data.model.api.CallNotSuccessfulException
 import com.example.data.model.api.EmptyBodyException
 import retrofit2.Response
