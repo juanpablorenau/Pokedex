@@ -1,6 +1,6 @@
 package com.example.data.repository
 
-import com.example.model.Pokemon
+import com.example.model.entities.Pokemon
 import kotlinx.coroutines.flow.Flow
 
 interface PokemonRepository {

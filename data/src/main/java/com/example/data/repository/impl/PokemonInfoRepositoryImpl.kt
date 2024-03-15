@@ -3,7 +3,7 @@ package com.example.data.repository.impl
 import com.example.data.model.api.toDomainModel
 import com.example.data.repository.PokemonInfoRepository
 import com.example.data.source.remote.PokedexRemoteDataSource
-import com.example.model.PokemonInfo
+import com.example.model.entities.PokemonInfo
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

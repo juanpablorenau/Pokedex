@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.androidx.material)
 
     // Compose
+    implementation(libs.coil.compose)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.runtime)
@@ -76,6 +77,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.tooling.preview)
+    implementation(libs.androidx.lifecycle.runtime.compose)
     androidTestImplementation(platform(libs.androidx.compose.bom))
 
     // UI Tests
@@ -89,6 +91,7 @@ dependencies {
 
     // Images
     implementation(libs.glide)
+    implementation(libs.androidx.palette.ktx)
 
     // Hilt
     implementation(libs.hilt.android)
