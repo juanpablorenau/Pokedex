@@ -18,11 +18,10 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".ui.list.PokemonListActivity"
+            android:name=".ui.list.PokemonsActivity"
             android:exported="true"
-            android:label="@string/title_activity_main"
-            android:roundIcon="@mipmap/ic_launcher"
-            android:theme="@style/Theme.Pokedex">
+            android:fitsSystemWindows="true"
+            android:roundIcon="@mipmap/ic_launcher">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

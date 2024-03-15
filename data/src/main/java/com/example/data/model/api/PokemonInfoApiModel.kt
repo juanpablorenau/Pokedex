@@ -1,7 +1,6 @@
 package com.example.data.model.api
 
-import android.health.connect.datatypes.WeightRecord
-import com.example.model.PokemonInfo
+import com.example.model.entities.PokemonInfo
 import com.google.gson.annotations.SerializedName
 
 data class PokemonInfoApiModel(
