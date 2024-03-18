@@ -17,5 +17,6 @@ data class PokemonApiModel(
 
 fun PokemonApiModel.toDomainModel() = Pokemon(
     name = name,
-    url = getImageUrl()
+    url = getImageUrl(),
+    imageColor = 0xFF000000.toInt()
 )

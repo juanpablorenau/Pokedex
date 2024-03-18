@@ -1,18 +1,18 @@
 package com.example.pokedex.ui.list
 
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,12 +27,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.palette.graphics.Palette
 import coil.compose.AsyncImage
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.example.model.entities.Pokemon
-import com.example.pokedex.theme.Black
 import com.example.pokedex.theme.PokedexTheme
+import com.example.pokedex.theme.Purple40
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -79,44 +76,30 @@ class PokemonsActivity : AppCompatActivity() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
-            colors = CardDefaults.cardColors(contentColor = Color(getDominantColor(pokemon.url))),
+            colors = CardDefaults.cardColors(containerColor = Color(pokemon.imageColor)),
         ) {
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
-                AsyncImage(
-                    model = pokemon.url,
-                    contentDescription = "Pokemon image",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(1.5f)
-                )
-                Text(
-                    text = pokemon.name,
-                    fontSize = 42.sp,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .align(Alignment.CenterHorizontally)
-                )
-            }
+            AsyncImage(
+                model = pokemon.url,
+                contentDescription = "Pokemon image",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1.5f),
+                onSuccess = { result ->
+                    val bitmap = (result.result.drawable as BitmapDrawable).bitmap
+                    val convertedBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, false)
+                    val palette = Palette.from(convertedBitmap).generate()
+                    val dominantColor = palette.getDominantColor(Color.Red.value.toInt())
+                    pokemon.imageColor = dominantColor
+                })
+            Text(
+                text = pokemon.name,
+                fontSize = 42.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .padding(vertical = 16.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
         }
-    }
-
-    private fun getDominantColor(url: String): Int {
-        var dominantColor = Black.value.toInt()
-        Glide.with(this)
-            .asBitmap()
-            .load(url)
-            .into(object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                    val palette = Palette.from(resource).generate()
-                    dominantColor = palette.getDominantColor(Black.value.toInt())
-                }
-
-                override fun onLoadCleared(placeholder: Drawable?) {}
-            })
-        return dominantColor
     }
 }
