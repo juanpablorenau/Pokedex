@@ -54,14 +54,7 @@ class PokemonsViewModel @Inject constructor(
         _uiState.value = PokemonsUiState.Error(error)
     }
 
-    fun updatePokemonColor(pokemon: Pokemon, result: SuccessResult) {
-        (_uiState.value as? PokemonsUiState.Success)?.pokemons?.map { currentPokemon ->
-            if (currentPokemon == pokemon) currentPokemon.copy(imageColor = getDominantColor(result))
-            else currentPokemon
-        }?.also { pokemons -> setSuccessState(pokemons) } ?: setErrorState("Null error")
-    }
-
-    private fun getDominantColor(result: SuccessResult): Int {
+    fun getDominantColor(result: SuccessResult): Int {
         val bitmap = (result.drawable as BitmapDrawable).bitmap
         val convertedBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, false)
         val palette = Palette.from(convertedBitmap).generate()

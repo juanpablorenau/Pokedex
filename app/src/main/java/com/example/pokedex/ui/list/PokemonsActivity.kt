@@ -11,6 +11,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,8 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import coil.request.SuccessResult
 import com.example.model.entities.Pokemon
 import com.example.pokedex.R
+import com.example.pokedex.theme.Black
 import com.example.pokedex.theme.PokedexTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -63,7 +67,7 @@ class PokemonsActivity : AppCompatActivity() {
     }
 
     @Composable
-    private fun ErrorScreen(error: String) {
+    private fun ErrorScreen(error: String = "") {
         AlertDialog(
             onDismissRequest = { },
             title = { Text("Ha ocurrido un error") },
@@ -80,19 +84,37 @@ class PokemonsActivity : AppCompatActivity() {
 
     @Composable
     fun SuccessScreen(pokemons: List<Pokemon>) {
+        val dominantColors = remember { mutableStateMapOf<String, Int>() }
+
         LazyColumn {
-            items(pokemons) { pokemon -> ItemPokemon(pokemon) {} }
+            items(pokemons) { pokemon ->
+                ItemPokemon(
+                    pokemon = pokemon,
+                    imageColor = dominantColors[pokemon.name] ?: Black.value.toInt(),
+                    onColorChanged = { result ->
+                        dominantColors[pokemon.name] = viewModel.getDominantColor(result)
+                    },
+                    onErrorHappened = { error -> viewModel.setErrorState(error) },
+                    onPokemonClicked = {}
+                )
+            }
         }
     }
 
     @Composable
-    fun ItemPokemon(pokemon: Pokemon, onPokemonClicked: (name: String) -> Unit) {
+    fun ItemPokemon(
+        pokemon: Pokemon,
+        imageColor: Int,
+        onColorChanged: (result: SuccessResult) -> Unit,
+        onErrorHappened: (error: String) -> Unit,
+        onPokemonClicked: (name: String) -> Unit,
+    ) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp)
                 .clickable { onPokemonClicked(pokemon.name) },
-            colors = CardDefaults.cardColors(containerColor = Color(pokemon.imageColor)),
+            colors = CardDefaults.cardColors(containerColor = Color(imageColor)),
         ) {
             AsyncImage(
                 modifier = Modifier
@@ -101,8 +123,8 @@ class PokemonsActivity : AppCompatActivity() {
                     .padding(top = 16.dp),
                 model = pokemon.url,
                 contentDescription = "Pokemon image",
-                onError = { error -> viewModel.setErrorState(error.result.toString()) },
-                onSuccess = { result -> viewModel.updatePokemonColor(pokemon, result.result) }
+                onError = { error -> onErrorHappened(error.result.toString()) },
+                onSuccess = { result -> onColorChanged(result.result) }
             )
             Text(
                 modifier = Modifier
