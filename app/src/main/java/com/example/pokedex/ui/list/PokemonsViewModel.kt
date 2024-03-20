@@ -55,10 +55,10 @@ class PokemonsViewModel @Inject constructor(
     }
 
     fun updatePokemonColor(pokemon: Pokemon, result: SuccessResult) {
-        (_uiState.value as PokemonsUiState.Success).pokemons.map { currentPokemon ->
+        (_uiState.value as? PokemonsUiState.Success)?.pokemons?.map { currentPokemon ->
             if (currentPokemon == pokemon) currentPokemon.copy(imageColor = getDominantColor(result))
             else currentPokemon
-        }.also { pokemons -> setSuccessState(pokemons) }
+        }?.also { pokemons -> setSuccessState(pokemons) } ?: setErrorState("Null error")
     }
 
     private fun getDominantColor(result: SuccessResult): Int {

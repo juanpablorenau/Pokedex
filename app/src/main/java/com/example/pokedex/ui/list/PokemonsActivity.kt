@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -80,37 +81,37 @@ class PokemonsActivity : AppCompatActivity() {
     @Composable
     fun SuccessScreen(pokemons: List<Pokemon>) {
         LazyColumn {
-            items(pokemons) { pokemon -> ItemPokemon(pokemon) }
+            items(pokemons) { pokemon -> ItemPokemon(pokemon) {} }
         }
     }
 
     @Composable
-    fun ItemPokemon(pokemon: Pokemon) {
+    fun ItemPokemon(pokemon: Pokemon, onPokemonClicked: (name: String) -> Unit) {
         Card(
-            onClick = { },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp),
+                .padding(vertical = 8.dp)
+                .clickable { onPokemonClicked(pokemon.name) },
             colors = CardDefaults.cardColors(containerColor = Color(pokemon.imageColor)),
-
         ) {
             AsyncImage(
-                model = pokemon.url,
-                contentDescription = "Pokemon image",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(1.5f),
+                    .aspectRatio(1.75f)
+                    .padding(top = 16.dp),
+                model = pokemon.url,
+                contentDescription = "Pokemon image",
                 onError = { error -> viewModel.setErrorState(error.result.toString()) },
                 onSuccess = { result -> viewModel.updatePokemonColor(pokemon, result.result) }
             )
             Text(
-                text = pokemon.name,
-                fontSize = 42.sp,
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .padding(vertical = 16.dp)
-                    .align(Alignment.CenterHorizontally)
+                    .align(Alignment.CenterHorizontally),
+                text = pokemon.name,
+                fontSize = 36.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
             )
         }
     }
