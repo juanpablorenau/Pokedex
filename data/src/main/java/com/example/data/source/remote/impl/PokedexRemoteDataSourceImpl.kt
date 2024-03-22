@@ -8,8 +8,9 @@ import com.example.data.source.remote.api.PokedexApi
 import com.example.data.utils.apiHandler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class PokedexRemoteDataSourceImpl(
+class PokedexRemoteDataSourceImpl @Inject constructor(
     private val api: PokedexApi,
     private val dispatcher: CoroutineDispatcher,
 ) : PokedexRemoteDataSource {

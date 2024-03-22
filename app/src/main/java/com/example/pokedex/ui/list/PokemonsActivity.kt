@@ -90,11 +90,11 @@ class PokemonsActivity : AppCompatActivity() {
             items(pokemons) { pokemon ->
                 ItemPokemon(
                     pokemon = pokemon,
-                    imageColor = dominantColors[pokemon.name] ?: Black.value.toInt(),
-                    onColorChanged = { result ->
+                    imageColor = dominantColors.getOrDefault(pokemon.name, Black.value.toInt()),
+                    onSuccess = { result ->
                         dominantColors[pokemon.name] = viewModel.getDominantColor(result)
                     },
-                    onErrorHappened = { error -> viewModel.setErrorState(error) },
+                    onError = { error -> viewModel.setErrorState(error) },
                     onPokemonClicked = {}
                 )
             }
@@ -105,8 +105,8 @@ class PokemonsActivity : AppCompatActivity() {
     fun ItemPokemon(
         pokemon: Pokemon,
         imageColor: Int,
-        onColorChanged: (result: SuccessResult) -> Unit,
-        onErrorHappened: (error: String) -> Unit,
+        onSuccess: (result: SuccessResult) -> Unit,
+        onError: (error: String) -> Unit,
         onPokemonClicked: (name: String) -> Unit,
     ) {
         Card(
@@ -123,8 +123,8 @@ class PokemonsActivity : AppCompatActivity() {
                     .padding(top = 16.dp),
                 model = pokemon.url,
                 contentDescription = "Pokemon image",
-                onError = { error -> onErrorHappened(error.result.toString()) },
-                onSuccess = { result -> onColorChanged(result.result) }
+                onError = { error -> onError(error.result.toString()) },
+                onSuccess = { result -> onSuccess(result.result) }
             )
             Text(
                 modifier = Modifier

@@ -4,6 +4,7 @@ import com.example.data.repository.PokemonInfoRepository
 import com.example.data.repository.PokemonRepository
 import com.example.data.repository.impl.PokemonInfoRepositoryImpl
 import com.example.data.repository.impl.PokemonRepositoryImpl
+import com.example.data.source.local.PokedexLocalDataSource
 import com.example.data.source.remote.PokedexRemoteDataSource
 import dagger.Module
 import dagger.Provides
@@ -18,8 +19,10 @@ class RepositoryModule {
     @Provides
     fun providesPokemonRepository(
         pokedexRemoteDataSource: PokedexRemoteDataSource,
+        pokedexLocalDataSource: PokedexLocalDataSource,
         dispatcher: CoroutineDispatcher,
-    ): PokemonRepository = PokemonRepositoryImpl(pokedexRemoteDataSource, dispatcher)
+    ): PokemonRepository =
+        PokemonRepositoryImpl(pokedexRemoteDataSource, pokedexLocalDataSource, dispatcher)
 
     @Provides
     fun providesPokemonInfoRepository(
