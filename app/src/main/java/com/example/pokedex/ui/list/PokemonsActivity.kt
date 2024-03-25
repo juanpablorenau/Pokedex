@@ -4,17 +4,20 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -109,10 +112,23 @@ class PokemonsActivity : AppCompatActivity() {
         onError: (error: String) -> Unit,
         onPokemonClicked: (name: String) -> Unit,
     ) {
+        var visible by remember { mutableStateOf(false) }
+
+        val alpha by animateFloatAsState(
+                targetValue = if (visible) 1f else 0.25f,
+        animationSpec = tween(durationMillis = 1000), label = "alphaAnim"
+        )
+
+        val scale by updateTransition(visible, label = "").animateFloat(
+            transitionSpec = { tween(durationMillis = 500) }, label = ""
+        ) { state -> if (state) 1f else 0.75f }
+
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp)
+                .alpha(alpha)
+                .scale(scale)
                 .clickable { onPokemonClicked(pokemon.name) },
             colors = CardDefaults.cardColors(containerColor = Color(imageColor)),
         ) {
@@ -135,6 +151,10 @@ class PokemonsActivity : AppCompatActivity() {
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
             )
+        }
+
+        LaunchedEffect(key1 = true) {
+            visible = true
         }
     }
 }
