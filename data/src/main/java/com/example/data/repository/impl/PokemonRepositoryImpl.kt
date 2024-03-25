@@ -20,13 +20,19 @@ class PokemonRepositoryImpl @Inject constructor(
 ) : PokemonRepository {
 
     override fun getPokemons(): Flow<List<Pokemon>> = flow {
-        val localPokemons = localDataSource.getPokemons()
+        val localPokemons = localDataSource.getPokemons().map { it.toDomainModel() }
         if (localPokemons.isEmpty()) {
-            val remotePokemons = remoteDataSource.getPokemons().results
-            localDataSource.insertPokemons(remotePokemons.map { it.toDomainModel().toDbModel() })
-            emit(remotePokemons.map { it.toDomainModel() })
+            var page = 0
+            do {
+                val remotePokemons =
+                    remoteDataSource.getPokemons(page++).results.map { it.toDomainModel() }
+                        .also { pokemons ->
+                            localDataSource.insertPokemons(pokemons.map { it.toDbModel() })
+                            emit(pokemons)
+                        }
+            } while (remotePokemons.isNotEmpty())
         } else {
-            emit(localPokemons.map { it.toDomainModel() })
+            emit(localPokemons)
         }
     }.flowOn(dispatcher)
 }

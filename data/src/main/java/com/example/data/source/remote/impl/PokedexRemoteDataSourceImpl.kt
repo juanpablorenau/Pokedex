@@ -14,8 +14,9 @@ class PokedexRemoteDataSourceImpl @Inject constructor(
     private val api: PokedexApi,
     private val dispatcher: CoroutineDispatcher,
 ) : PokedexRemoteDataSource {
-    override suspend fun getPokemons(): ApiResponse<PokemonApiModel> =
-        withContext(dispatcher) { apiHandler { api.getPokemons() } }
+
+    override suspend fun getPokemons(page: Int): ApiResponse<PokemonApiModel> =
+        withContext(dispatcher) { apiHandler { api.getPokemons(limit = page) } }
 
     override suspend fun getPokemonInfo(name: String): PokemonInfoApiModel =
         withContext(dispatcher) { apiHandler { api.getPokemonInfo(name) } }

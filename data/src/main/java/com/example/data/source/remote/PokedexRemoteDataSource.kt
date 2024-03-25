@@ -6,6 +6,6 @@ import com.example.data.model.api.PokemonInfoApiModel
 
 interface PokedexRemoteDataSource {
 
-    suspend fun getPokemons(): ApiResponse<PokemonApiModel>
+    suspend fun getPokemons(page: Int): ApiResponse<PokemonApiModel>
     suspend fun getPokemonInfo(name: String): PokemonInfoApiModel
 }
