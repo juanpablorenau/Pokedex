@@ -7,6 +7,5 @@ import javax.inject.Inject
 
 class GetPokemonInfoUseCase @Inject constructor(private val repository: PokemonInfoRepository) {
 
-    fun invoke(name: String): Flow<PokemonInfo> =
-        repository.getPokemonInfo(name)
+    operator fun invoke(name: String): Flow<PokemonInfo> = repository.getPokemonInfo(name)
 }

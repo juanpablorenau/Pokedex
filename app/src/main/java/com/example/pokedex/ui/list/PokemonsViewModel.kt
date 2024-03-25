@@ -40,7 +40,7 @@ class PokemonsViewModel @Inject constructor(
     private fun getPokemons() {
         viewModelScope.launch(Dispatchers.Main) {
             delay(2500)
-            getPokemonsUseCase.invoke()
+            getPokemonsUseCase()
                 .catch { exception -> setErrorState(exception.message.orEmptyString()) }
                 .collect { pokemons -> setSuccessState(pokemons) }
         }

@@ -1,5 +1,8 @@
 package com.example.data.di
 
+import com.example.data.source.local.PokedexLocalDataSource
+import com.example.data.source.local.dao.PokedexDao
+import com.example.data.source.local.impl.PokedexLocalDataSourceImpl
 import com.example.data.source.remote.PokedexRemoteDataSource
 import com.example.data.source.remote.api.PokedexApi
 import com.example.data.source.remote.impl.PokedexRemoteDataSourceImpl
@@ -18,4 +21,10 @@ class DataSourceModule {
         pokedexApi: PokedexApi,
         dispatcher: CoroutineDispatcher,
     ): PokedexRemoteDataSource = PokedexRemoteDataSourceImpl(pokedexApi, dispatcher)
+
+    @Provides
+    fun providesPokedexLocalDataSource(
+        pokedexDao: PokedexDao,
+        dispatcher: CoroutineDispatcher,
+    ): PokedexLocalDataSource = PokedexLocalDataSourceImpl(pokedexDao, dispatcher)
 }
