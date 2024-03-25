@@ -9,5 +9,5 @@ import javax.inject.Inject
 
 class GetPokemonsUseCase @Inject constructor(private val repository: PokemonRepository) {
 
-    fun invoke(): Flow<List<Pokemon>> = repository.getPokemons().flowOn(Dispatchers.IO)
+    operator fun invoke(): Flow<List<Pokemon>> = repository.getPokemons().flowOn(Dispatchers.IO)
 }

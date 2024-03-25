@@ -68,6 +68,13 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
 
+    //Room
+    kapt(libs.androidx.room.compiler)
+    annotationProcessor(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.paging)
+    implementation(libs.androidx.room.runtime)
+
     // Testing
     androidTestImplementation(libs.androidx.ui.test.junit4)
     testImplementation(libs.junit)
