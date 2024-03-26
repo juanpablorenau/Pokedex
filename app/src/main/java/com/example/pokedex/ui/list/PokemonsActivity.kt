@@ -82,12 +82,12 @@ class PokemonsActivity : AppCompatActivity() {
     @Composable
     private fun ErrorScreen(error: String = "") {
         AlertDialog(onDismissRequest = { },
-            title = { Text("Ha ocurrido un error") },
+            title = { Text("An error has occurred") },
             text = { Text(error) },
             confirmButton = {
                 Text(
                     modifier = Modifier.clickable { viewModel.getPokemons() },
-                    text = "Aceptar",
+                    text = "Accept",
                 )
             },
             icon = {
