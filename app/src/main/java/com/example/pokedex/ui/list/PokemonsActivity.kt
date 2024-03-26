@@ -41,6 +41,7 @@ import com.example.model.entities.Pokemon
 import com.example.pokedex.R
 import com.example.pokedex.theme.Black
 import com.example.pokedex.theme.PokedexTheme
+import com.example.pokedex.utils.getDominantColor
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -174,14 +175,17 @@ class PokemonsActivity : AppCompatActivity() {
                         pokemon.name, Black.value.toInt()
                     ),
                     onSuccess = { result ->
-                        dominantColors[pokemon.name] = viewModel.getDominantColor(result)
+                        dominantColors[pokemon.name] = getDominantColor(result)
                     },
                     onError = { error -> viewModel.setErrorState(error) },
-                    onPokemonClicked = {})
+                    onPokemonClicked = { navigateToPokemonInfoActivity(pokemon.name) }
+                )
             }
         }
     }
 
+    private fun navigateToPokemonInfoActivity(name: String) {
+    }
 
     @Composable
     fun ItemPokemon(
@@ -220,6 +224,7 @@ class PokemonsActivity : AppCompatActivity() {
                 contentDescription = "Pokemon image",
                 onError = { error -> onError(error.result.toString()) },
                 onSuccess = { result -> onSuccess(result.result) })
+
             Text(
                 modifier = Modifier
                     .padding(vertical = 16.dp)

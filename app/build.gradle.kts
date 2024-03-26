@@ -79,6 +79,7 @@ dependencies {
     implementation(libs.androidx.compose.tooling.preview)
     implementation(libs.androidx.lifecycle.runtime.compose)
     androidTestImplementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.navigation.compose)
 
     // UI Tests
     androidTestImplementation(libs.androidx.ui.test.junit4)
