@@ -26,11 +26,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -83,7 +83,12 @@ class PokemonsActivity : AppCompatActivity() {
         AlertDialog(onDismissRequest = { },
             title = { Text("Ha ocurrido un error") },
             text = { Text(error) },
-            confirmButton = { Text("Aceptar") },
+            confirmButton = {
+                Text(
+                    modifier = Modifier.clickable { viewModel.getPokemons() },
+                    text = "Aceptar",
+                )
+            },
             icon = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_error),
@@ -105,6 +110,7 @@ class PokemonsActivity : AppCompatActivity() {
     fun SearchBar(scrollState: LazyListState, onSearch: (String) -> Unit) {
         if (remember { derivedStateOf { scrollState.firstVisibleItemScrollOffset } }.value <= 0) {
             var searchText by remember { mutableStateOf("") }
+            val keyboardController = LocalSoftwareKeyboardController.current
 
             OutlinedTextField(
                 modifier = Modifier
@@ -121,16 +127,19 @@ class PokemonsActivity : AppCompatActivity() {
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text, imeAction = ImeAction.Done
                 ),
-                keyboardActions = KeyboardActions(onDone = { onSearch(searchText.lowercase()) }),
+                keyboardActions = KeyboardActions(onDone = {
+                    keyboardController?.hide()
+                    onSearch(searchText.lowercase())
+                }),
                 shape = RoundedCornerShape(16.dp),
                 trailingIcon = {
                     if (searchText.isNotEmpty()) {
                         CloseIcon {
                             searchText = ""
                             viewModel.getPokemons()
-                        } }
+                        }
                     }
-
+                }
             )
         }
     }

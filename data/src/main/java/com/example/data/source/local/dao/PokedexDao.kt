@@ -13,7 +13,7 @@ interface PokedexDao {
     suspend fun getPokemons(): List<PokemonDbModel>
 
     @Query("SELECT * FROM Pokemons WHERE name = :name")
-    suspend fun getPokemon(name: String): PokemonDbModel
+    suspend fun getPokemon(name: String): PokemonDbModel?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPokemons(pokemons: List<PokemonDbModel>)

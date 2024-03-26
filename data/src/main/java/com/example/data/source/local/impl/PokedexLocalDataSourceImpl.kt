@@ -15,7 +15,7 @@ class PokedexLocalDataSourceImpl @Inject constructor(
     override suspend fun getPokemons(): List<PokemonDbModel> =
         withContext(dispatcher) { pokedexDao.getPokemons() }
 
-    override suspend fun getPokemon(name: String): PokemonDbModel =
+    override suspend fun getPokemon(name: String): PokemonDbModel? =
         withContext(dispatcher) { pokedexDao.getPokemon(name) }
 
     override suspend fun insertPokemons(pokemons: List<PokemonDbModel>) {
