@@ -35,4 +35,8 @@ class PokemonRepositoryImpl @Inject constructor(
             emit(localPokemons)
         }
     }.flowOn(dispatcher)
+
+    override fun getPokemon(name: String): Flow<Pokemon> = flow {
+        emit(localDataSource.getPokemon(name).toDomainModel())
+    }.flowOn(dispatcher)
 }
