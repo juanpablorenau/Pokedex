@@ -11,7 +11,14 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,8 +26,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -58,8 +68,7 @@ class PokemonsActivity : AppCompatActivity() {
     @Composable
     private fun LoadingScreen() {
         Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator(
                 modifier = Modifier.width(64.dp),
@@ -71,38 +80,108 @@ class PokemonsActivity : AppCompatActivity() {
 
     @Composable
     private fun ErrorScreen(error: String = "") {
-        AlertDialog(
-            onDismissRequest = { },
+        AlertDialog(onDismissRequest = { },
             title = { Text("Ha ocurrido un error") },
             text = { Text(error) },
-            confirmButton = { Text("Aceptar") },
+            confirmButton = {
+                Text(
+                    modifier = Modifier.clickable { viewModel.getPokemons() },
+                    text = "Aceptar",
+                )
+            },
             icon = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_error),
                     contentDescription = "Error Icon"
                 )
-            }
+            })
+    }
+
+    @Composable
+    fun SuccessScreen(pokemons: List<Pokemon> = listOf()) {
+        val scrollState = rememberLazyListState()
+
+        Scaffold(
+            topBar = { SearchBar(scrollState, onSearch = { name -> viewModel.getPokemon(name) }) },
+            content = { padding -> LazyColumn(pokemons, padding, scrollState) })
+    }
+
+    @Composable
+    fun SearchBar(scrollState: LazyListState, onSearch: (String) -> Unit) {
+        if (remember { derivedStateOf { scrollState.firstVisibleItemScrollOffset } }.value <= 0) {
+            var searchText by remember { mutableStateOf("") }
+            val keyboardController = LocalSoftwareKeyboardController.current
+
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 4.dp, vertical = 8.dp),
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = Color.White,
+                    focusedContainerColor = Color.White,
+                ),
+                value = searchText,
+                onValueChange = { newText -> searchText = newText },
+                label = { Text(text = "Search") },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text, imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(onDone = {
+                    keyboardController?.hide()
+                    onSearch(searchText.lowercase())
+                }),
+                shape = RoundedCornerShape(16.dp),
+                trailingIcon = {
+                    if (searchText.isNotEmpty()) {
+                        CloseIcon {
+                            searchText = ""
+                            viewModel.getPokemons()
+                        }
+                    }
+                }
+            )
+        }
+    }
+
+    @Composable
+    fun CloseIcon(onClick: () -> Unit) {
+        Icon(
+            imageVector = Icons.Default.Close,
+            contentDescription = "Close",
+            tint = Color.Gray,
+            modifier = Modifier
+                .padding(4.dp)
+                .clickable(onClick = onClick)
         )
     }
 
     @Composable
-    fun SuccessScreen(pokemons: List<Pokemon>) {
+    fun LazyColumn(
+        pokemons: List<Pokemon>,
+        padding: PaddingValues,
+        scrollState: LazyListState,
+    ) {
         val dominantColors = remember { mutableStateMapOf<String, Int>() }
 
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier.padding(padding),
+            state = scrollState,
+        ) {
             items(pokemons) { pokemon ->
-                ItemPokemon(
-                    pokemon = pokemon,
-                    imageColor = dominantColors.getOrDefault(pokemon.name, Black.value.toInt()),
+                ItemPokemon(pokemon = pokemon,
+                    imageColor = dominantColors.getOrDefault(
+                        pokemon.name, Black.value.toInt()
+                    ),
                     onSuccess = { result ->
                         dominantColors[pokemon.name] = viewModel.getDominantColor(result)
                     },
                     onError = { error -> viewModel.setErrorState(error) },
-                    onPokemonClicked = {}
-                )
+                    onPokemonClicked = {})
             }
         }
     }
+
 
     @Composable
     fun ItemPokemon(
@@ -115,33 +194,32 @@ class PokemonsActivity : AppCompatActivity() {
         var visible by remember { mutableStateOf(false) }
 
         val alpha by animateFloatAsState(
-                targetValue = if (visible) 1f else 0.25f,
-        animationSpec = tween(durationMillis = 1000), label = "alphaAnim"
+            targetValue = if (visible) 1f else 0.25f,
+            animationSpec = tween(durationMillis = 1000),
+            label = "alphaAnim"
         )
 
-        val scale by updateTransition(visible, label = "").animateFloat(
-            transitionSpec = { tween(durationMillis = 500) }, label = ""
+        val scale by updateTransition(visible, label = "scaleTrans").animateFloat(
+            transitionSpec = { tween(durationMillis = 500) }, label = "scaleAnim"
         ) { state -> if (state) 1f else 0.75f }
 
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp)
+                .padding(horizontal = 4.dp, vertical = 8.dp)
                 .alpha(alpha)
                 .scale(scale)
                 .clickable { onPokemonClicked(pokemon.name) },
             colors = CardDefaults.cardColors(containerColor = Color(imageColor)),
         ) {
-            AsyncImage(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1.75f)
-                    .padding(top = 16.dp),
+            AsyncImage(modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1.75f)
+                .padding(top = 16.dp),
                 model = pokemon.url,
                 contentDescription = "Pokemon image",
                 onError = { error -> onError(error.result.toString()) },
-                onSuccess = { result -> onSuccess(result.result) }
-            )
+                onSuccess = { result -> onSuccess(result.result) })
             Text(
                 modifier = Modifier
                     .padding(vertical = 16.dp)

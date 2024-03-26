@@ -17,5 +17,7 @@ interface PokedexApi {
     ): Response<ApiResponse<PokemonApiModel>>
 
     @GET("pokemon/{name}")
-    suspend fun getPokemonInfo(@Path("name") name: String): Response<PokemonInfoApiModel>
+    suspend fun getPokemonInfo(
+        @Path("name") name: String,
+    ): Response<PokemonInfoApiModel>
 }

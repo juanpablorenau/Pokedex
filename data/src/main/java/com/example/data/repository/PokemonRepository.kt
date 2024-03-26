@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface PokemonRepository {
 
     fun getPokemons() : Flow<List<Pokemon>>
+
+    fun getPokemon(name: String) : Flow<Pokemon>
 }

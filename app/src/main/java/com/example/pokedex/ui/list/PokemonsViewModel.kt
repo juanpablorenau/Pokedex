@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
 import coil.request.SuccessResult
+import com.example.domain.usecase.GetPokemonUseCase
 import com.example.domain.usecase.GetPokemonsUseCase
 import com.example.model.entities.Pokemon
 import com.example.model.utils.orEmptyString
@@ -28,6 +29,7 @@ sealed class PokemonsUiState {
 @HiltViewModel
 class PokemonsViewModel @Inject constructor(
     private val getPokemonsUseCase: GetPokemonsUseCase,
+    private val getPokemonUseCase: GetPokemonUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<PokemonsUiState>(PokemonsUiState.Loading)
@@ -37,12 +39,19 @@ class PokemonsViewModel @Inject constructor(
         getPokemons()
     }
 
-    private fun getPokemons() {
+    fun getPokemons() {
         viewModelScope.launch(Dispatchers.Main) {
-            delay(2500)
             getPokemonsUseCase()
                 .catch { exception -> setErrorState(exception.message.orEmptyString()) }
                 .collect { pokemons -> setSuccessState(pokemons) }
+        }
+    }
+
+    fun getPokemon(name: String) {
+        viewModelScope.launch(Dispatchers.Main) {
+            getPokemonUseCase(name)
+                .catch { exception -> setErrorState(exception.message.orEmptyString()) }
+                .collect { pokemon -> setSuccessState(listOf(pokemon)) }
         }
     }
 
