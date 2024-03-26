@@ -28,6 +28,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -82,12 +83,12 @@ class PokemonsActivity : AppCompatActivity() {
     @Composable
     private fun ErrorScreen(error: String = "") {
         AlertDialog(onDismissRequest = { },
-            title = { Text("An error has occurred") },
+            title = { Text(stringResource(R.string.generic_error_msg)) },
             text = { Text(error) },
             confirmButton = {
                 Text(
                     modifier = Modifier.clickable { viewModel.getPokemons() },
-                    text = "Accept",
+                    text = stringResource(R.string.accept),
                 )
             },
             icon = {
@@ -123,7 +124,7 @@ class PokemonsActivity : AppCompatActivity() {
                 ),
                 value = searchText,
                 onValueChange = { newText -> searchText = newText },
-                label = { Text(text = "Search") },
+                label = { Text(text = stringResource(R.string.search)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text, imeAction = ImeAction.Done
@@ -149,7 +150,7 @@ class PokemonsActivity : AppCompatActivity() {
     fun CloseIcon(onClick: () -> Unit) {
         Icon(
             imageVector = Icons.Default.Close,
-            contentDescription = "Close",
+            contentDescription = stringResource(R.string.close),
             tint = Color.Gray,
             modifier = Modifier
                 .padding(4.dp)
