@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import coil.request.SuccessResult
 import com.example.model.entities.Pokemon
 import com.example.pokedex.R
 import com.example.pokedex.navigation.AppScreens.PokemonInfoScreen
@@ -187,8 +186,6 @@ fun LazyColumn(
     scrollState: LazyListState,
     setErrorState: (error: String) -> Unit,
 ) {
-    val dominantColors = remember { mutableStateMapOf<String, Int>() }
-
     LazyColumn(
         modifier = Modifier.padding(padding),
         state = scrollState,
@@ -197,8 +194,6 @@ fun LazyColumn(
             ItemPokemon(
                 navController = navController,
                 pokemon = pokemon,
-                imageColor = dominantColors.getOrDefault(pokemon.name, Black.value.toInt()),
-                onSuccess = { result -> dominantColors[pokemon.name] = getDominantColor(result) },
                 onError = { error -> setErrorState(error) }
             )
         }
@@ -209,11 +204,10 @@ fun LazyColumn(
 fun ItemPokemon(
     navController: NavHostController,
     pokemon: Pokemon,
-    imageColor: Int,
-    onSuccess: (result: SuccessResult) -> Unit,
     onError: (error: String) -> Unit,
 ) {
     var visible by remember { mutableStateOf(false) }
+    var dominantColor by remember { mutableIntStateOf(Black.value.toInt()) }
 
     val alpha by animateFloatAsState(
         targetValue = if (visible) 1f else 0.25f,
@@ -234,7 +228,7 @@ fun ItemPokemon(
             .alpha(alpha)
             .scale(scale)
             .clickable { navController.navigate(route) },
-        colors = CardDefaults.cardColors(containerColor = Color(imageColor)),
+        colors = CardDefaults.cardColors(containerColor = Color(dominantColor)),
     ) {
         AsyncImage(
             modifier = Modifier
@@ -244,8 +238,8 @@ fun ItemPokemon(
             model = pokemon.url,
             contentDescription = "Pokemon image",
             onError = { error -> onError(error.result.toString()) },
-            onSuccess = { result -> onSuccess(result.result) })
-
+            onSuccess = { result -> dominantColor = getDominantColor(result.result) }
+        )
         Text(
             modifier = Modifier
                 .padding(vertical = 16.dp)
