@@ -38,6 +38,6 @@ class PokemonRepositoryImpl @Inject constructor(
 
     override fun getPokemon(name: String): Flow<Pokemon> = flow {
         localDataSource.getPokemon(name)?.let { pokemon -> emit(pokemon.toDomainModel()) }
-            ?: throw Exception("Pokemon $name no encontrado")
+            ?: throw Exception("Pokemon $name not found")
     }.flowOn(dispatcher)
 }

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Pokedex</string>
+    <string name="search">Search</string>
+    <string name="close">Close</string>
+    <string name="accept">Accept</string>
+    <string name="generic_error_msg">An error has occurred</string>
 </resources>
