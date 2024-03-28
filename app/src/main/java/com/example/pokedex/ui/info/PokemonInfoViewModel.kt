@@ -39,7 +39,7 @@ class PokemonInfoViewModel @Inject constructor(
         _uiState.value = PokemonInfoUiState.Success(pokemonInfo)
     }
 
-    private fun setErrorState(error: String) {
+    fun setErrorState(error: String) {
         _uiState.value = PokemonInfoUiState.Error(error)
     }
 }
