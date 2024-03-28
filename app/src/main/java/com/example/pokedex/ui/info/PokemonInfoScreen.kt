@@ -145,6 +145,7 @@ fun Content(
                     topStart = 0.dp, topEnd = 0.dp, bottomStart = 48.dp, bottomEnd = 48.dp
                 )
             ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),
         colors = CardDefaults.cardColors(containerColor = Color(imageColor)),
         shape = RectangleShape,
     ) {

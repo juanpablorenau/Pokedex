@@ -228,6 +228,7 @@ fun ItemPokemon(
             .alpha(alpha)
             .scale(scale)
             .clickable { navController.navigate(route) },
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         colors = CardDefaults.cardColors(containerColor = Color(dominantColor)),
     ) {
         AsyncImage(
