@@ -191,67 +191,14 @@ fun Content(
                     .padding(top = 16.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Chip("Veneno", dominantColor)
-                Chip("Planta", dominantColor)
+                pokemonInfo.types.forEach { type -> Chip(type.name, type.color) }
             }
         }
     }
 }
 
-/*@Preview(showBackground = true)
 @Composable
-fun Content() {
-
-    Column {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(
-                    RoundedCornerShape(
-                        topStart = 0.dp, topEnd = 0.dp, bottomStart = 48.dp, bottomEnd = 48.dp
-                    )
-                ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(Black.value)),
-            shape = RectangleShape,
-        ) {
-            Image(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1.75f),
-                painter = painterResource(id = R.drawable.ic_pokemons),
-                contentDescription = "Pokemon image",
-
-                )
-        }
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-        ) {
-            Text(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                text = "Bulbasaur",
-                color = Color.Black
-            )
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Chip("Veneno", Red.toArgb())
-                Chip("Planta", Red.toArgb())
-            }
-
-        }
-    }
-}*/
-
-@Composable
-private fun Chip(type: String, color: Int) {
+private fun Chip(type: String, color: Long) {
     Card(
         modifier = Modifier
             .padding(8.dp)
