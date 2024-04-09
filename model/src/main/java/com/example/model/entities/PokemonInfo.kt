@@ -13,6 +13,12 @@ data class PokemonInfo(
     val baseExperience: String = "",
 )
 
+fun PokemonInfo.getFormattedId() = when {
+    id.toInt() < 10 -> "#00$id"
+    id.toInt() < 100 -> "#0$id"
+    else -> "#$id"
+}
+
 data class Stat(
     val name: String = "",
     val baseStat: Int = 0,

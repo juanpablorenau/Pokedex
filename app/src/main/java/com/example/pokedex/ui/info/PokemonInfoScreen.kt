@@ -1,5 +1,6 @@
 package com.example.pokedex.ui.info
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -13,13 +14,13 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -27,6 +28,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.SuccessResult
 import com.example.model.entities.PokemonInfo
+import com.example.model.entities.getFormattedId
 import com.example.pokedex.R
 import com.example.pokedex.theme.Black
 import com.example.pokedex.utils.getDominantColor
@@ -96,7 +98,7 @@ fun SuccessScreen(
     systemUiController.setSystemBarsColor(color = Color(dominantColor.intValue))
 
     Scaffold(
-        topBar = { TopBar(navController, dominantColor) },
+        topBar = { TopBar(navController, dominantColor, pokemonInfo) },
         content = { padding ->
             Content(
                 padding = padding,
@@ -111,7 +113,11 @@ fun SuccessScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(navController: NavHostController, dominantColor: MutableIntState) {
+fun TopBar(
+    navController: NavHostController,
+    dominantColor: MutableIntState,
+    pokemonInfo: PokemonInfo,
+) {
     TopAppBar(colors = TopAppBarDefaults.topAppBarColors().copy(
         containerColor = Color(dominantColor.intValue)
     ), navigationIcon = {
@@ -122,9 +128,20 @@ fun TopBar(navController: NavHostController, dominantColor: MutableIntState) {
             )
         }
     }, title = {
-        Text(
-            color = Color.Black, text = stringResource(R.string.app_name)
-        )
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                color = Color.Black,
+                text = stringResource(R.string.app_name)
+            )
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 8.dp),
+                textAlign = TextAlign.End,
+                color = Color.White,
+                text = pokemonInfo.getFormattedId()
+            )
+        }
     })
 }
 
@@ -136,60 +153,53 @@ fun Content(
     onSuccess: (result: SuccessResult) -> Unit,
     onError: (error: String) -> Unit,
 ) {
-    Column {
-        Card(
+    Column(
+        modifier = Modifier
+            .padding(
+                top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding()
+            )
+            .background(
+                brush = Brush.verticalGradient(colors = listOf(Color(dominantColor), Color.White))
+            )
+    ) {
+        AsyncImage(modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(1.75f),
+            model = pokemonInfo.url,
+            contentDescription = "Pokemon image",
+            onError = { error -> onError(error.result.toString()) },
+            onSuccess = { result -> onSuccess(result.result) })
+
+        Text(
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(top = 16.dp),
+            text = pokemonInfo.name,
+            color = Color(dominantColor),
+            fontSize = 36.sp
+        )
+
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding()
-                )
-                .clip(
-                    RoundedCornerShape(
-                        topStart = 0.dp, topEnd = 0.dp, bottomStart = 48.dp, bottomEnd = 48.dp
-                    )
-                ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(dominantColor)),
-            shape = RectangleShape,
-        ) {
-            AsyncImage(modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1.75f),
-                model = pokemonInfo.url,
-                contentDescription = "Pokemon image",
-                onError = { error -> onError(error.result.toString()) },
-                onSuccess = { result -> onSuccess(result.result) })
-        }
+                .padding(top = 16.dp),
+            horizontalArrangement = Arrangement.Center
+        ) { pokemonInfo.types.forEach { type -> Chip(type.name, type.color) } }
 
+        HorizontalDivider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                .height(1.dp), color = Color(dominantColor)
+        )
+    }
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
         ) {
-            Text(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = 16.dp),
-                text = pokemonInfo.name,
-                color = Color(dominantColor),
-                fontSize = 36.sp
-            )
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp),
-                horizontalArrangement = Arrangement.Center
-            ) { pokemonInfo.types.forEach { type -> Chip(type.name, type.color) } }
-
-            HorizontalDivider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
-                    .height(1.dp), color = Color(dominantColor)
-            )
         }
-    }
 }
 
 @Composable
