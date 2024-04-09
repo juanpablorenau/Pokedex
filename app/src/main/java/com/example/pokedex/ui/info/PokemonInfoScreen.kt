@@ -210,11 +210,13 @@ private fun Chip(type: String, color: Long) {
 @Composable
 fun TabLayout(dominantColor: Int) {
     val titles = listOf("About", "Stats", "Moves", "Evolutions")
-    var selectedTabIndex by remember { mutableStateOf(0) }
+    var selectedTabIndex by remember { mutableIntStateOf(0) }
 
     Scaffold(
         topBar = {
             TabRow(
+                contentColor = Color.White,
+                containerColor = Color.White,
                 indicator = { tabPositions ->
                     SecondaryIndicator(
                         Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
