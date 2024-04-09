@@ -3,15 +3,11 @@ package com.example.pokedex.ui.info
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableIntState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -153,53 +149,44 @@ fun Content(
     onSuccess: (result: SuccessResult) -> Unit,
     onError: (error: String) -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .padding(
-                top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding()
-            )
-            .background(
-                brush = Brush.verticalGradient(colors = listOf(Color(dominantColor), Color.White))
-            )
-    ) {
-        AsyncImage(modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(1.75f),
-            model = pokemonInfo.url,
-            contentDescription = "Pokemon image",
-            onError = { error -> onError(error.result.toString()) },
-            onSuccess = { result -> onSuccess(result.result) })
-
-        Text(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 16.dp),
-            text = pokemonInfo.name,
-            color = Color(dominantColor),
-            fontSize = 36.sp
-        )
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            horizontalArrangement = Arrangement.Center
-        ) { pokemonInfo.types.forEach { type -> Chip(type.name, type.color) } }
-
-        HorizontalDivider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp, start = 16.dp, end = 16.dp)
-                .height(1.dp), color = Color(dominantColor)
-        )
-    }
+    Column {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
+                .padding(
+                    top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding()
+                )
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(Color(dominantColor), Color.White)
+                    )
+                )
         ) {
+            AsyncImage(modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1.75f),
+                model = pokemonInfo.url,
+                contentDescription = "Pokemon image",
+                onError = { error -> onError(error.result.toString()) },
+                onSuccess = { result -> onSuccess(result.result) })
 
+            Text(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 16.dp),
+                text = pokemonInfo.name,
+                color = Color(dominantColor),
+                fontSize = 36.sp
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
+                horizontalArrangement = Arrangement.Center
+            ) { pokemonInfo.types.forEach { type -> Chip(type.name, type.color) } }
         }
+        TabLayout(dominantColor)
+    }
 }
 
 @Composable
@@ -218,4 +205,47 @@ private fun Chip(type: String, color: Long) {
             style = MaterialTheme.typography.bodyMedium
         )
     }
+}
+
+@Composable
+fun TabLayout(dominantColor: Int) {
+    val titles = listOf("About", "Stats", "Moves", "Evolutions")
+    var selectedTabIndex by remember { mutableStateOf(0) }
+
+    Scaffold(
+        topBar = {
+            TabRow(
+                indicator = { tabPositions ->
+                    SecondaryIndicator(
+                        Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
+                        height = 2.dp,
+                        color = Color.Gray
+                    )
+                },
+                selectedTabIndex = selectedTabIndex
+            ) {
+                titles.forEachIndexed { index, title ->
+                    Tab(
+                        text = {
+                            Text(
+                                text = title,
+                                color = Color(dominantColor)
+                            )
+                        },
+                        selected = selectedTabIndex == index,
+                        onClick = { selectedTabIndex = index }
+                    )
+                }
+            }
+        },
+        content = { paddingValues ->
+            when (selectedTabIndex) {
+                0 -> {}
+                1 -> {}
+                2 -> {}
+                3 -> {}
+                else -> throw IllegalArgumentException("Tab desconocido.")
+            }
+        }
+    )
 }
