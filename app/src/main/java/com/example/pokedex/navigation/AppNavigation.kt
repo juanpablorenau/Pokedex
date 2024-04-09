@@ -9,14 +9,18 @@ import androidx.navigation.navArgument
 import com.example.model.utils.orEmptyString
 import com.example.pokedex.ui.info.PokemonInfoScreen
 import com.example.pokedex.ui.list.PokemonsScreen
+import com.example.pokedex.ui.splash.SplashScreen
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
     NavHost(
-        navController = navController, startDestination = AppScreens.PokemonsScreen.route
+        navController = navController, startDestination = AppScreens.SplashScreen.route
     ) {
+        composable(route = AppScreens.SplashScreen.route) { SplashScreen(navController) }
+
         composable(route = AppScreens.PokemonsScreen.route) { PokemonsScreen(navController) }
+
         composable(
             route = AppScreens.PokemonInfoScreen.route + "/{name}",
             arguments = listOf(
