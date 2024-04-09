@@ -2,7 +2,9 @@ package com.example.pokedex.ui.info
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableIntState
@@ -12,12 +14,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
@@ -27,6 +31,7 @@ import com.example.pokedex.R
 import com.example.pokedex.theme.Black
 import com.example.pokedex.utils.getDominantColor
 import com.example.pokedex.utils.getViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun PokemonInfoScreen(navController: NavHostController, name: String) {
@@ -42,8 +47,7 @@ fun PokemonInfoScreen(navController: NavHostController, name: String) {
             SuccessScreen(
                 navController = navController,
                 pokemonInfo = state.pokemonInfo,
-                setErrorState = { error -> viewModel.setErrorState(error) }
-            )
+                setErrorState = { error -> viewModel.setErrorState(error) })
         }
     }
 }
@@ -51,8 +55,7 @@ fun PokemonInfoScreen(navController: NavHostController, name: String) {
 @Composable
 private fun LoadingScreen() {
     Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(
             modifier = Modifier.width(64.dp),
@@ -87,8 +90,10 @@ fun SuccessScreen(
     pokemonInfo: PokemonInfo,
     setErrorState: (error: String) -> Unit,
 ) {
-
+    val systemUiController = rememberSystemUiController()
     val dominantColor = remember { mutableIntStateOf(Black.value.toInt()) }
+
+    systemUiController.setSystemBarsColor(color = Color(dominantColor.intValue))
 
     Scaffold(
         topBar = { TopBar(navController, dominantColor) },
@@ -96,7 +101,7 @@ fun SuccessScreen(
             Content(
                 padding = padding,
                 pokemonInfo = pokemonInfo,
-                imageColor = dominantColor.intValue,
+                dominantColor = dominantColor.intValue,
                 onSuccess = { result -> dominantColor.intValue = getDominantColor(result) },
                 onError = { error -> setErrorState(error) },
             )
@@ -107,56 +112,100 @@ fun SuccessScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(navController: NavHostController, dominantColor: MutableIntState) {
-    TopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors().copy(
-            containerColor = Color(dominantColor.intValue)
-        ),
-        navigationIcon = {
-            IconButton(onClick = { navController.popBackStack() }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_arrow_back),
-                    contentDescription = "backIcon"
-                )
-            }
-        },
-        title = {
-            Text(
-                color = Color.Black,
-                text = stringResource(R.string.app_name)
+    TopAppBar(colors = TopAppBarDefaults.topAppBarColors().copy(
+        containerColor = Color(dominantColor.intValue)
+    ), navigationIcon = {
+        IconButton(onClick = { navController.popBackStack() }) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_arrow_back),
+                contentDescription = "backIcon"
             )
         }
-    )
+    }, title = {
+        Text(
+            color = Color.Black, text = stringResource(R.string.app_name)
+        )
+    })
 }
 
 @Composable
 fun Content(
     padding: PaddingValues,
     pokemonInfo: PokemonInfo,
-    imageColor: Int,
+    dominantColor: Int,
     onSuccess: (result: SuccessResult) -> Unit,
     onError: (error: String) -> Unit,
 ) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = padding.calculateTopPadding())
-            .clip(
-                RoundedCornerShape(
-                    topStart = 0.dp, topEnd = 0.dp, bottomStart = 48.dp, bottomEnd = 48.dp
-                )
-            ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(imageColor)),
-        shape = RectangleShape,
-    ) {
-        AsyncImage(
+    Column {
+        Card(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(
+                    top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding()
+                )
+                .clip(
+                    RoundedCornerShape(
+                        topStart = 0.dp, topEnd = 0.dp, bottomStart = 48.dp, bottomEnd = 48.dp
+                    )
+                ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),
+            colors = CardDefaults.cardColors(containerColor = Color(dominantColor)),
+            shape = RectangleShape,
+        ) {
+            AsyncImage(modifier = Modifier
+                .fillMaxWidth()
                 .aspectRatio(1.75f),
-            model = pokemonInfo.url,
-            contentDescription = "Pokemon image",
-            onError = { error -> onError(error.result.toString()) },
-            onSuccess = { result -> onSuccess(result.result) }
+                model = pokemonInfo.url,
+                contentDescription = "Pokemon image",
+                onError = { error -> onError(error.result.toString()) },
+                onSuccess = { result -> onSuccess(result.result) })
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+        ) {
+            Text(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 16.dp),
+                text = pokemonInfo.name,
+                color = Color(dominantColor),
+                fontSize = 36.sp
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                horizontalArrangement = Arrangement.Center
+            ) { pokemonInfo.types.forEach { type -> Chip(type.name, type.color) } }
+
+            HorizontalDivider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                    .height(1.dp), color = Color(dominantColor)
+            )
+        }
+    }
+}
+
+@Composable
+private fun Chip(type: String, color: Long) {
+    Card(
+        modifier = Modifier
+            .padding(8.dp)
+            .shadow(4.dp, RoundedCornerShape(12.dp)),
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors().copy(containerColor = Color(color)),
+    ) {
+        Text(
+            text = type.uppercase(),
+            modifier = Modifier.padding(horizontal = 24.dp, vertical = 4.dp),
+            color = Color.Black,
+            style = MaterialTheme.typography.bodyMedium
         )
     }
 }

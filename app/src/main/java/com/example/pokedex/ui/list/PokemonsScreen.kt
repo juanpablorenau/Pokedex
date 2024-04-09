@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -40,6 +41,7 @@ import com.example.pokedex.navigation.AppScreens.PokemonInfoScreen
 import com.example.pokedex.theme.Black
 import com.example.pokedex.utils.getDominantColor
 import com.example.pokedex.utils.getViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun PokemonsScreen(navController: NavHostController) {
@@ -103,6 +105,9 @@ fun SuccessScreen(
     setErrorState: (error: String) -> Unit,
 ) {
     val scrollState = rememberLazyListState()
+
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setSystemBarsColor(color = Color(Color.Transparent.toArgb()))
 
     Scaffold(
         topBar = {
