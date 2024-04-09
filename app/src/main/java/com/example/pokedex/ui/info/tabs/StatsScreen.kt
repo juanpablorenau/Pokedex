@@ -58,7 +58,7 @@ fun StatsTab(
 fun ShowProgress(score: Int = 100, dominantColor: Int) {
 
     val gradient = Brush.linearGradient(listOf(Color(dominantColor), Color.Gray))
-    val progressFactor by remember { mutableFloatStateOf( score * 0.005f) }
+    val progressFactor by remember { mutableFloatStateOf( score * 0.0075f) }
 
     Row(
         modifier = Modifier
