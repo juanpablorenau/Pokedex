@@ -27,6 +27,7 @@ import com.example.model.entities.PokemonInfo
 import com.example.model.entities.getFormattedId
 import com.example.pokedex.R
 import com.example.pokedex.theme.Black
+import com.example.pokedex.ui.info.tabs.StatsTab
 import com.example.pokedex.utils.getDominantColor
 import com.example.pokedex.utils.getViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -185,7 +186,7 @@ fun Content(
                 horizontalArrangement = Arrangement.Center
             ) { pokemonInfo.types.forEach { type -> Chip(type.name, type.color) } }
         }
-        TabLayout(dominantColor)
+        TabLayout(pokemonInfo, dominantColor)
     }
 }
 
@@ -208,7 +209,7 @@ private fun Chip(type: String, color: Long) {
 }
 
 @Composable
-fun TabLayout(dominantColor: Int) {
+fun TabLayout(pokemonInfo: PokemonInfo, dominantColor: Int) {
     val titles = listOf("About", "Stats", "Moves", "Evolutions")
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
@@ -243,7 +244,7 @@ fun TabLayout(dominantColor: Int) {
         content = { paddingValues ->
             when (selectedTabIndex) {
                 0 -> {}
-                1 -> {}
+                1 -> StatsTab(paddingValues, pokemonInfo, dominantColor)
                 2 -> {}
                 3 -> {}
                 else -> throw IllegalArgumentException("Tab desconocido.")
