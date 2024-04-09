@@ -47,8 +47,7 @@ fun PokemonInfoScreen(navController: NavHostController, name: String) {
             SuccessScreen(
                 navController = navController,
                 pokemonInfo = state.pokemonInfo,
-                setErrorState = { error -> viewModel.setErrorState(error) }
-            )
+                setErrorState = { error -> viewModel.setErrorState(error) })
         }
     }
 }
@@ -56,8 +55,7 @@ fun PokemonInfoScreen(navController: NavHostController, name: String) {
 @Composable
 private fun LoadingScreen() {
     Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(
             modifier = Modifier.width(64.dp),
@@ -114,25 +112,20 @@ fun SuccessScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(navController: NavHostController, dominantColor: MutableIntState) {
-    TopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors().copy(
-            containerColor = Color(dominantColor.intValue)
-        ),
-        navigationIcon = {
-            IconButton(onClick = { navController.popBackStack() }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_arrow_back),
-                    contentDescription = "backIcon"
-                )
-            }
-        },
-        title = {
-            Text(
-                color = Color.Black,
-                text = stringResource(R.string.app_name)
+    TopAppBar(colors = TopAppBarDefaults.topAppBarColors().copy(
+        containerColor = Color(dominantColor.intValue)
+    ), navigationIcon = {
+        IconButton(onClick = { navController.popBackStack() }) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_arrow_back),
+                contentDescription = "backIcon"
             )
         }
-    )
+    }, title = {
+        Text(
+            color = Color.Black, text = stringResource(R.string.app_name)
+        )
+    })
 }
 
 @Composable
@@ -148,8 +141,7 @@ fun Content(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    top = padding.calculateTopPadding(),
-                    bottom = padding.calculateBottomPadding()
+                    top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding()
                 )
                 .clip(
                     RoundedCornerShape(
@@ -160,15 +152,13 @@ fun Content(
             colors = CardDefaults.cardColors(containerColor = Color(dominantColor)),
             shape = RectangleShape,
         ) {
-            AsyncImage(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1.75f),
+            AsyncImage(modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1.75f),
                 model = pokemonInfo.url,
                 contentDescription = "Pokemon image",
                 onError = { error -> onError(error.result.toString()) },
-                onSuccess = { result -> onSuccess(result.result) }
-            )
+                onSuccess = { result -> onSuccess(result.result) })
         }
 
         Column(
@@ -190,9 +180,14 @@ fun Content(
                     .fillMaxWidth()
                     .padding(top = 16.dp),
                 horizontalArrangement = Arrangement.Center
-            ) {
-                pokemonInfo.types.forEach { type -> Chip(type.name, type.color) }
-            }
+            ) { pokemonInfo.types.forEach { type -> Chip(type.name, type.color) } }
+
+            HorizontalDivider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                    .height(1.dp), color = Color(dominantColor)
+            )
         }
     }
 }
