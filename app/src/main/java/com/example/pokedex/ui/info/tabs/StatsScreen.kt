@@ -1,13 +1,14 @@
 package com.example.pokedex.ui.info.tabs
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,17 +49,23 @@ fun StatsTab(
                     textAlign = TextAlign.Center,
                 )
 
-                ShowProgress(stat.baseStat, dominantColor)
+                ShowProgress(stat.baseStat, dominantColor, 1000)
             }
         }
     }
 }
 
 @Composable
-fun ShowProgress(score: Int = 100, dominantColor: Int) {
-
+fun ShowProgress(score: Int = 100, dominantColor: Int, durationMillis: Int = 1000) {
     val gradient = Brush.linearGradient(listOf(Color(dominantColor), Color.Gray))
-    val progressFactor by remember { mutableFloatStateOf( score * 0.0075f) }
+    val progressFactor = remember { Animatable(0f) }
+
+    LaunchedEffect(score) {
+        progressFactor.animateTo(
+            targetValue = score * 0.0075f,
+            animationSpec = tween(durationMillis = durationMillis)
+        )
+    }
 
     Row(
         modifier = Modifier
@@ -83,10 +90,10 @@ fun ShowProgress(score: Int = 100, dominantColor: Int) {
     ) {
         Text(
             modifier = Modifier
-                .fillMaxWidth(progressFactor)
+                .fillMaxWidth(progressFactor.value)
                 .background(brush = gradient),
             text = "",
-            color = Color.Transparent
+            color = Color.White
         )
     }
 }
