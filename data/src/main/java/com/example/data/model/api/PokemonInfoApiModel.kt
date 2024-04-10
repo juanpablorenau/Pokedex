@@ -29,7 +29,8 @@ data class PokemonInfoApiModel(
 
     fun getFormattedWeight() = String.format(Locale.ENGLISH, "%.1f KG", weight.toFloat() / 10)
     fun getFormattedHeight() = String.format(Locale.ENGLISH, "%.1f M", height.toFloat() / 10)
-    fun getPokemonStats() = stats.map { Stat(name = it.stat.name, baseStat = it.baseState) }
+    fun getPokemonStats() =
+        stats.map { Stat(name = it.getFormattedStatName(), baseStat = it.baseState) }
 }
 
 fun PokemonInfoApiModel.toDomainModel() = PokemonInfo(
