@@ -27,6 +27,8 @@ import com.example.model.entities.PokemonInfo
 import com.example.model.entities.getFormattedId
 import com.example.pokedex.R
 import com.example.pokedex.theme.Black
+import com.example.pokedex.ui.info.tabs.AboutTab
+import com.example.pokedex.ui.info.tabs.MovesTab
 import com.example.pokedex.ui.info.tabs.StatsTab
 import com.example.pokedex.utils.getDominantColor
 import com.example.pokedex.utils.getViewModel
@@ -243,9 +245,9 @@ fun TabLayout(pokemonInfo: PokemonInfo, dominantColor: Int) {
         },
         content = { paddingValues ->
             when (selectedTabIndex) {
-                0 -> {}
+                0 -> AboutTab(paddingValues, pokemonInfo, dominantColor)
                 1 -> StatsTab(paddingValues, pokemonInfo, dominantColor)
-                2 -> {}
+                2 -> MovesTab(paddingValues, pokemonInfo, dominantColor)
                 3 -> {}
                 else -> throw IllegalArgumentException("Tab desconocido.")
             }
