@@ -1,9 +1,12 @@
 package com.example.pokedex.ui.list
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -135,7 +138,13 @@ fun SearchBar(
     onSearch: (String) -> Unit,
     getPokemons: () -> Unit,
 ) {
-    if (remember { derivedStateOf { scrollState.firstVisibleItemScrollOffset } }.value <= 0) {
+    val isSearchBarVisible by remember { derivedStateOf { !scrollState.isScrollInProgress } }
+
+    AnimatedVisibility(
+        visible = isSearchBarVisible,
+        enter = slideInVertically(initialOffsetY = { -400 }),
+        exit = slideOutVertically(targetOffsetY = { -40 })
+    ) {
         var searchText by remember { mutableStateOf("") }
         val keyboardController = LocalSoftwareKeyboardController.current
 
