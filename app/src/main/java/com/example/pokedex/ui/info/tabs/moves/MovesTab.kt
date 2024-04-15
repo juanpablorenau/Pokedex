@@ -8,7 +8,7 @@ import com.example.model.entities.PokemonInfo
 fun MovesTab(
     paddingValues: PaddingValues,
     pokemonInfo: PokemonInfo,
-    dominantColor: Int,
+    color: Int,
 ) {
 
 }

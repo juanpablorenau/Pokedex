@@ -31,6 +31,7 @@ import com.example.pokedex.ui.info.tabs.about.AboutTab
 import com.example.pokedex.ui.info.tabs.moves.MovesTab
 import com.example.pokedex.ui.info.tabs.stats.StatsTab
 import com.example.pokedex.utils.getDominantColor
+import com.example.pokedex.utils.getSecondDominantColor
 import com.example.pokedex.utils.getViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -93,6 +94,7 @@ fun SuccessScreen(
 ) {
     val systemUiController = rememberSystemUiController()
     val dominantColor = remember { mutableIntStateOf(Black.value.toInt()) }
+    val secondColor = remember { mutableIntStateOf(Black.value.toInt()) }
 
     systemUiController.setSystemBarsColor(color = Color(dominantColor.intValue))
 
@@ -103,7 +105,11 @@ fun SuccessScreen(
                 padding = padding,
                 pokemonInfo = pokemonInfo,
                 dominantColor = dominantColor.intValue,
-                onSuccess = { result -> dominantColor.intValue = getDominantColor(result) },
+                secondColor = secondColor.intValue,
+                onSuccess = { result ->
+                    dominantColor.intValue = getDominantColor(result)
+                    secondColor.intValue = getSecondDominantColor(result)
+                },
                 onError = { error -> setErrorState(error) },
             )
         }
@@ -149,6 +155,7 @@ fun Content(
     padding: PaddingValues,
     pokemonInfo: PokemonInfo,
     dominantColor: Int,
+    secondColor: Int,
     onSuccess: (result: SuccessResult) -> Unit,
     onError: (error: String) -> Unit,
 ) {
@@ -188,7 +195,7 @@ fun Content(
                 horizontalArrangement = Arrangement.Center
             ) { pokemonInfo.types.forEach { type -> Chip(type.name, type.color) } }
         }
-        TabLayout(pokemonInfo, dominantColor)
+        TabLayout(pokemonInfo, secondColor)
     }
 }
 
@@ -211,7 +218,7 @@ private fun Chip(type: String, color: Long) {
 }
 
 @Composable
-fun TabLayout(pokemonInfo: PokemonInfo, dominantColor: Int) {
+fun TabLayout(pokemonInfo: PokemonInfo, color: Int) {
     val titles = listOf("About", "Stats", "Moves", "Evolutions")
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
@@ -234,7 +241,7 @@ fun TabLayout(pokemonInfo: PokemonInfo, dominantColor: Int) {
                         text = {
                             Text(
                                 text = title,
-                                color = Color(dominantColor)
+                                color = Color(color)
                             )
                         },
                         selected = selectedTabIndex == index,
@@ -245,9 +252,9 @@ fun TabLayout(pokemonInfo: PokemonInfo, dominantColor: Int) {
         },
         content = { paddingValues ->
             when (selectedTabIndex) {
-                0 -> AboutTab(paddingValues, pokemonInfo, dominantColor)
-                1 -> StatsTab(paddingValues, pokemonInfo, dominantColor)
-                2 -> MovesTab(paddingValues, pokemonInfo, dominantColor)
+                0 -> AboutTab(paddingValues, pokemonInfo, color)
+                1 -> StatsTab(paddingValues, pokemonInfo, color)
+                2 -> MovesTab(paddingValues, pokemonInfo, color)
                 3 -> {}
                 else -> throw IllegalArgumentException("Tab desconocido.")
             }

@@ -6,9 +6,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.palette.graphics.Palette
 import coil.request.SuccessResult
 
-fun getDominantColor(result: SuccessResult): Int {
+private fun getPaletteFrom(result: SuccessResult): Palette {
     val bitmap = (result.drawable as BitmapDrawable).bitmap
-    val convertedBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, false)
-    val palette = Palette.from(convertedBitmap).generate()
-    return palette.getDominantColor(Color.Black.value.toInt())
+        .copy(Bitmap.Config.ARGB_8888, false)
+    return Palette.from(bitmap).generate()
 }
+
+fun getDominantColor(result: SuccessResult): Int =
+    getPaletteFrom(result).getDominantColor(Color.Black.value.toInt())
+
+fun getSecondDominantColor(result: SuccessResult): Int =
+    getPaletteFrom(result).swatches.getOrNull(1)?.rgb ?: getDominantColor(result)
+
