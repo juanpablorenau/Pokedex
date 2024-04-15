@@ -1,7 +1,6 @@
 package com.example.model.entities
 
 import com.example.model.entities.enums.PokemonType
-import java.util.Locale
 
 data class PokemonInfo(
     val id: Int = 0,
@@ -9,14 +8,11 @@ data class PokemonInfo(
     val height: Int = 0,
     val weight: Int = 0,
     val url: String = "",
+    val baseExperience: Int = 0,
     val types: List<PokemonType> = listOf(PokemonType.UNKNOWN),
     val stats: List<Stat> = listOf(),
-    val baseExperience: Int = 0,
-) {
-
-    fun getFormattedWeight() = String.format(Locale.ENGLISH, "%.1f KG", weight.toFloat() / 10)
-    fun getFormattedHeight() = String.format(Locale.ENGLISH, "%.1f M", height.toFloat() / 10)
-}
+    val moves: List<String> = listOf(),
+)
 
 fun PokemonInfo.getFormattedId() = when {
     id < 10 -> "#00$id"

@@ -1,6 +1,7 @@
 package com.example.pokedex.ui.info.tabs.about
 
 import android.graphics.Color.BLACK
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,7 +53,9 @@ fun SuccessScreen(
     characteristics: Characteristics = Characteristics(description = "Hola"),
 ) {
     Column(
-        modifier = Modifier.padding(top = paddingValues.calculateTopPadding()),
+        modifier = Modifier
+            .padding(top = paddingValues.calculateTopPadding())
+            .background(Color.White),
     ) {
         Text(
             modifier = Modifier

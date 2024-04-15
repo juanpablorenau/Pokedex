@@ -195,7 +195,7 @@ fun Content(
                 horizontalArrangement = Arrangement.Center
             ) { pokemonInfo.types.forEach { type -> Chip(type.name, type.color) } }
         }
-        TabLayout(pokemonInfo, secondColor)
+        TabLayout(pokemonInfo, dominantColor, secondColor)
     }
 }
 
@@ -218,7 +218,7 @@ private fun Chip(type: String, color: Long) {
 }
 
 @Composable
-fun TabLayout(pokemonInfo: PokemonInfo, color: Int) {
+fun TabLayout(pokemonInfo: PokemonInfo, dominantColor: Int, secondColor: Int) {
     val titles = listOf("About", "Stats", "Moves", "Evolutions")
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
@@ -241,7 +241,7 @@ fun TabLayout(pokemonInfo: PokemonInfo, color: Int) {
                         text = {
                             Text(
                                 text = title,
-                                color = Color(color)
+                                color = Color(secondColor)
                             )
                         },
                         selected = selectedTabIndex == index,
@@ -252,9 +252,9 @@ fun TabLayout(pokemonInfo: PokemonInfo, color: Int) {
         },
         content = { paddingValues ->
             when (selectedTabIndex) {
-                0 -> AboutTab(paddingValues, pokemonInfo, color)
-                1 -> StatsTab(paddingValues, pokemonInfo, color)
-                2 -> MovesTab(paddingValues, pokemonInfo, color)
+                0 -> AboutTab(paddingValues, pokemonInfo, secondColor)
+                1 -> StatsTab(paddingValues, pokemonInfo, secondColor)
+                2 -> MovesTab(paddingValues, pokemonInfo, dominantColor)
                 3 -> {}
                 else -> throw IllegalArgumentException("Tab desconocido.")
             }

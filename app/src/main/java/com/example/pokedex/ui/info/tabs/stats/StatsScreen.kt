@@ -29,6 +29,7 @@ fun StatsTab(
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .background(Color.White)
             .padding(top = paddingValues.calculateTopPadding() + 16.dp, start = 12.dp, end = 12.dp)
     ) {
         pokemonInfo.stats.forEach { stat ->
