@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -67,8 +68,9 @@ fun CircularProgress(
         Text(
             text = "${Math.round(progressText.value)}$text",
             fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier.align(Alignment.Center),
-            color = Color.Black
+            color = Color(color)
         )
     }
 }
