@@ -123,6 +123,7 @@ fun SuccessScreen(
         content = { padding ->
             LazyColumn(
                 navController = navController,
+                getPokemons = { getPokemons() },
                 pokemons = pokemons,
                 padding = padding,
                 scrollState = scrollState,
@@ -199,6 +200,7 @@ fun LazyColumn(
     padding: PaddingValues,
     scrollState: LazyListState,
     setErrorState: (error: String) -> Unit,
+    getPokemons: () -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.padding(padding),
@@ -208,6 +210,7 @@ fun LazyColumn(
             ItemPokemon(
                 navController = navController,
                 pokemon = pokemon,
+                getPokemons = { getPokemons() },
                 onError = { error -> setErrorState(error) }
             )
         }
@@ -219,6 +222,7 @@ fun ItemPokemon(
     navController: NavHostController,
     pokemon: Pokemon,
     onError: (error: String) -> Unit,
+    getPokemons: () -> Unit,
 ) {
     var visible by remember { mutableStateOf(false) }
     var dominantColor by remember { mutableIntStateOf(Black.value.toInt()) }
@@ -241,7 +245,10 @@ fun ItemPokemon(
             .padding(horizontal = 4.dp, vertical = 8.dp)
             .alpha(alpha)
             .scale(scale)
-            .clickable { navController.navigate(route) },
+            .clickable {
+                getPokemons()
+                navController.navigate(route)
+            },
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         colors = CardDefaults.cardColors(containerColor = Color(dominantColor)),
     ) {

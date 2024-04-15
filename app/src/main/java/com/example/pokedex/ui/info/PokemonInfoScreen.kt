@@ -27,9 +27,9 @@ import com.example.model.entities.PokemonInfo
 import com.example.model.entities.getFormattedId
 import com.example.pokedex.R
 import com.example.pokedex.theme.Black
-import com.example.pokedex.ui.info.tabs.AboutTab
-import com.example.pokedex.ui.info.tabs.MovesTab
-import com.example.pokedex.ui.info.tabs.StatsTab
+import com.example.pokedex.ui.info.tabs.about.AboutTab
+import com.example.pokedex.ui.info.tabs.moves.MovesTab
+import com.example.pokedex.ui.info.tabs.stats.StatsTab
 import com.example.pokedex.utils.getDominantColor
 import com.example.pokedex.utils.getViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -54,7 +54,7 @@ fun PokemonInfoScreen(navController: NavHostController, name: String) {
 }
 
 @Composable
-private fun LoadingScreen() {
+fun LoadingScreen() {
     Box(
         modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {

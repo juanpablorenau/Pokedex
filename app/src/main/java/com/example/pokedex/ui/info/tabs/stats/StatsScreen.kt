@@ -1,4 +1,4 @@
-package com.example.pokedex.ui.info.tabs
+package com.example.pokedex.ui.info.tabs.stats
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
