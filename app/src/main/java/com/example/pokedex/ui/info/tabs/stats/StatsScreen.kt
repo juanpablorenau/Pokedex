@@ -50,21 +50,21 @@ fun StatsTab(
                     textAlign = TextAlign.Center,
                 )
 
-                ShowProgress(stat.baseStat, color, 1000)
+                ShowProgress(stat.baseStat, color)
             }
         }
     }
 }
 
 @Composable
-fun ShowProgress(score: Int = 100, color: Int, durationMillis: Int = 1000) {
+private  fun ShowProgress(score: Int = 100, color: Int) {
     val gradient = Brush.linearGradient(listOf(Color(color), Color.Gray))
     val progressFactor = remember { Animatable(0f) }
 
     LaunchedEffect(score) {
         progressFactor.animateTo(
             targetValue = score * 0.0075f,
-            animationSpec = tween(durationMillis = durationMillis)
+            animationSpec = tween(durationMillis = 1000)
         )
     }
 

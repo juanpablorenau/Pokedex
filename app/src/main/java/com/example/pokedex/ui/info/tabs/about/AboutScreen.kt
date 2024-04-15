@@ -46,7 +46,7 @@ fun AboutTab(
 
 @Preview(showBackground = true)
 @Composable
-fun SuccessScreen(
+private fun SuccessScreen(
     paddingValues: PaddingValues = PaddingValues(),
     pokemonInfo: PokemonInfo = PokemonInfo(),
     color: Int = BLACK,

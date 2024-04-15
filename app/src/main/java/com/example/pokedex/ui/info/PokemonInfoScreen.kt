@@ -55,7 +55,7 @@ fun PokemonInfoScreen(navController: NavHostController, name: String) {
 }
 
 @Composable
-fun LoadingScreen() {
+private fun LoadingScreen() {
     Box(
         modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
@@ -87,7 +87,7 @@ private fun ErrorScreen(error: String = "") {
 }
 
 @Composable
-fun SuccessScreen(
+private fun SuccessScreen(
     navController: NavHostController,
     pokemonInfo: PokemonInfo,
     setErrorState: (error: String) -> Unit,
@@ -118,7 +118,7 @@ fun SuccessScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(
+private fun TopBar(
     navController: NavHostController,
     dominantColor: MutableIntState,
     pokemonInfo: PokemonInfo,
@@ -151,7 +151,7 @@ fun TopBar(
 }
 
 @Composable
-fun Content(
+private fun Content(
     padding: PaddingValues,
     pokemonInfo: PokemonInfo,
     dominantColor: Int,
@@ -218,7 +218,7 @@ private fun Chip(type: String, color: Long) {
 }
 
 @Composable
-fun TabLayout(pokemonInfo: PokemonInfo, dominantColor: Int, secondColor: Int) {
+private fun TabLayout(pokemonInfo: PokemonInfo, dominantColor: Int, secondColor: Int) {
     val titles = listOf("About", "Stats", "Moves", "Evolutions")
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
