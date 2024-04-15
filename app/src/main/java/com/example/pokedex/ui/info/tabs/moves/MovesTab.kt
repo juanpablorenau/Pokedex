@@ -4,14 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
@@ -19,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.model.entities.MoveInfo
 import com.example.model.entities.PokemonInfo
@@ -83,27 +83,60 @@ private fun SuccessScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun ItemMove(move: MoveInfo = MoveInfo(), color: Int = Color.Red.toArgb()) {
+private fun ItemMove(move: MoveInfo = MoveInfo(), color: Int = Color.LightGray.toArgb()) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.White),
     ) {
-        Text(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
-            color = Color.Black,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            text = move.name.visualFormat("-")
-        )
+                .padding(16.dp),
+        ) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                color = Color.Black,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Start,
+                text = move.name.visualFormat("-")
+            )
+            Chip(move.type.name, move.type.color)
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+        ){
+
+
+        }
 
         HorizontalDivider(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(2.dp),
-            color = Color(color)
+                .height(2.dp), color = Color(color)
+        )
+    }
+}
+
+@Composable
+private fun Chip(type: String, color: Long) {
+    Card(
+        modifier = Modifier
+            .shadow(4.dp, RoundedCornerShape(12.dp)),
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors().copy(containerColor = Color(color)),
+    ) {
+        Text(
+            text = type,
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+            color = Color.Black,
+            fontSize = 12.sp,
+            style = MaterialTheme.typography.bodyMedium
         )
     }
 }

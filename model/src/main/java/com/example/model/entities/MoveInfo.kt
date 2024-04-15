@@ -4,10 +4,10 @@ import com.example.model.entities.enums.PokemonType
 
 data class MoveInfo(
     val id: Int = 0,
-    val name: String = "",
+    val name: String = "bulbasaur",
     val accuracy: Int = 0,
     val power: Int = 0,
     val pp: Int = 0,
-    val type: PokemonType = PokemonType.UNKNOWN,
-    val effects: List<String> = listOf(),
+    val type: PokemonType = PokemonType.BUG,
+    val effects: List<String> = listOf("Es peligroso"),
 )
