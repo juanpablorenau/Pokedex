@@ -37,12 +37,11 @@ fun MovesTab(
     viewModel.getMovesInfo(pokemonInfo.moves)
 
     when (val state = uiState) {
-        is MovesUiState.Loading -> LoadingScreen()
+        is MovesUiState.Loading -> LoadingScreen(color)
         is MovesUiState.Error -> ErrorScreen()
         is MovesUiState.Success -> {
             SuccessScreen(
                 paddingValues = paddingValues,
-                pokemonInfo = pokemonInfo,
                 color = color,
                 moves = state.moves
             )
@@ -51,13 +50,17 @@ fun MovesTab(
 }
 
 @Composable
-private fun LoadingScreen() {
+private fun LoadingScreen(color: Int) {
     Box(
-        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
-    ) {
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White),
+        contentAlignment = Alignment.Center,
+
+        ) {
         CircularProgressIndicator(
             modifier = Modifier.width(64.dp),
-            color = MaterialTheme.colorScheme.secondary,
+            color = Color(color),
             trackColor = MaterialTheme.colorScheme.surfaceVariant
         )
     }
@@ -70,7 +73,6 @@ private fun ErrorScreen() {
 @Composable
 private fun SuccessScreen(
     paddingValues: PaddingValues,
-    pokemonInfo: PokemonInfo,
     color: Int,
     moves: List<MoveInfo>,
 ) {
@@ -92,51 +94,52 @@ private fun ItemMove(move: MoveInfo = MoveInfo(), color: Int = Color.LightGray.t
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(horizontal = 24.dp, vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f),
+                    .weight(0.55f),
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Start,
                 text = move.name.visualFormat("-")
             )
-            Chip(move.type.name, move.type.color)
-        }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-        ){
+            Text(
+                modifier = Modifier
+                    .weight(0.2f),
+                text = move.power.toString(),
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                color = Color(move.type.color)
+            )
 
 
+            Card(
+                modifier = Modifier
+                    .shadow(4.dp, RoundedCornerShape(12.dp))
+                    .weight(0.25f),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors().copy(containerColor = Color(move.type.color)),
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = 12.dp, vertical = 4.dp)
+                        .fillMaxWidth(),
+                    text = move.type.name,
+                    textAlign = TextAlign.Center,
+                    color = Color.Black,
+                    fontSize = 12.sp,
+                )
+            }
         }
 
         HorizontalDivider(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(2.dp), color = Color(color)
-        )
-    }
-}
-
-@Composable
-private fun Chip(type: String, color: Long) {
-    Card(
-        modifier = Modifier
-            .shadow(4.dp, RoundedCornerShape(12.dp)),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors().copy(containerColor = Color(color)),
-    ) {
-        Text(
-            text = type,
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
-            color = Color.Black,
-            fontSize = 12.sp,
-            style = MaterialTheme.typography.bodyMedium
         )
     }
 }
