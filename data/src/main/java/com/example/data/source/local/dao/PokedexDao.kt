@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.data.model.room.MoveInfoDbModel
 import com.example.data.model.room.PokemonDbModel
 
 @Dao
@@ -17,4 +18,10 @@ interface PokedexDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPokemons(pokemons: List<PokemonDbModel>)
+
+    @Query("SELECT * FROM Moves WHERE name = :name")
+    suspend fun getMoveInfo(name: String): MoveInfoDbModel
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMoveInfo(move: MoveInfoDbModel)
 }
