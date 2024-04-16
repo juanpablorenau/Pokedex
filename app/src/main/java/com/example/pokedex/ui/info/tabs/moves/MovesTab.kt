@@ -94,14 +94,14 @@ private fun ItemMove(move: MoveInfo = MoveInfo(), color: Int = Color.LightGray.t
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 16.dp),
+                .padding(horizontal = 24.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(0.55f),
-                color = Color.Black,
+                    .weight(0.58f),
+                color = Color(move.type.color),
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Start,
                 text = move.name.visualFormat("-")
@@ -120,17 +120,17 @@ private fun ItemMove(move: MoveInfo = MoveInfo(), color: Int = Color.LightGray.t
             Card(
                 modifier = Modifier
                     .shadow(4.dp, RoundedCornerShape(12.dp))
-                    .weight(0.25f),
+                    .weight(0.22f),
                 shape = RoundedCornerShape(12.dp),
                 colors = CardDefaults.cardColors().copy(containerColor = Color(move.type.color)),
             ) {
                 Text(
                     modifier = Modifier
-                        .padding(horizontal = 12.dp, vertical = 4.dp)
+                        .padding(horizontal = 4.dp, vertical = 4.dp)
                         .fillMaxWidth(),
                     text = move.type.name,
                     textAlign = TextAlign.Center,
-                    color = Color.Black,
+                    color = Color.White,
                     fontSize = 12.sp,
                 )
             }
