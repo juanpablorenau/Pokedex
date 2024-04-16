@@ -3,7 +3,7 @@ package com.example.model.utils
 
 fun String?.orEmptyString() = this ?: ""
 
-fun String.addQuotationMarks() =  " \" $this \""
+fun String.addQuotationMarks() =  " \"$this\""
 
 fun String.uppercaseFirstChar() = replaceFirstChar { firstChar -> firstChar.uppercase() }
 
