@@ -39,6 +39,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.model.entities.Pokemon
+import com.example.model.utils.uppercaseFirstChar
 import com.example.pokedex.R
 import com.example.pokedex.navigation.AppScreens.PokemonInfoScreen
 import com.example.pokedex.theme.Black
@@ -266,7 +267,7 @@ private fun ItemPokemon(
             modifier = Modifier
                 .padding(vertical = 16.dp)
                 .align(Alignment.CenterHorizontally),
-            text = pokemon.name,
+            text = pokemon.name.uppercaseFirstChar(),
             fontSize = 36.sp,
             color = Color.White,
             fontWeight = FontWeight.Bold,
