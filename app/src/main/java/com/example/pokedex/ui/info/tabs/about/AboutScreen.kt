@@ -64,7 +64,7 @@ private fun SuccessScreen(
                 .fillMaxWidth(),
             text = characteristics.description.addQuotationMarks(),
             color = Color(BLACK),
-            fontSize = 24.sp,
+            fontSize = 26.sp,
             textAlign = TextAlign.Center,
             fontFamily = FontFamily.Cursive,
         )
@@ -80,7 +80,7 @@ private fun SuccessScreen(
             ) {
                 Text(
                     modifier = Modifier.padding(bottom = 12.dp),
-                    text = "Experience",
+                    text = "Base Exp.",
                     color = Color(BLACK),
                     fontSize = 16.sp,
                 )
