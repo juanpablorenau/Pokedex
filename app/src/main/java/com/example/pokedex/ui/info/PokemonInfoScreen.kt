@@ -25,6 +25,7 @@ import coil.compose.AsyncImage
 import coil.request.SuccessResult
 import com.example.model.entities.PokemonInfo
 import com.example.model.entities.getFormattedId
+import com.example.model.utils.uppercaseFirstChar
 import com.example.pokedex.R
 import com.example.pokedex.theme.Black
 import com.example.pokedex.ui.info.tabs.about.AboutTab
@@ -44,7 +45,7 @@ fun PokemonInfoScreen(navController: NavHostController, name: String) {
 
     when (val state = uiState) {
         is PokemonInfoUiState.Loading -> LoadingScreen()
-        is PokemonInfoUiState.Error -> ErrorScreen(state.error)
+        is PokemonInfoUiState.Error -> ErrorScreen(navController, state.error)
         is PokemonInfoUiState.Success -> {
             SuccessScreen(
                 navController = navController,
@@ -68,13 +69,13 @@ private fun LoadingScreen() {
 }
 
 @Composable
-private fun ErrorScreen(error: String = "") {
+private fun ErrorScreen(navController: NavHostController, error: String = "") {
     AlertDialog(onDismissRequest = { },
         title = { Text(stringResource(R.string.generic_error_msg)) },
         text = { Text(error) },
         confirmButton = {
             Text(
-                modifier = Modifier.clickable { },
+                modifier = Modifier.clickable { navController.popBackStack() },
                 text = stringResource(R.string.accept),
             )
         },
@@ -183,7 +184,7 @@ private fun Content(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(top = 16.dp),
-                text = pokemonInfo.name,
+                text = pokemonInfo.name.uppercaseFirstChar(),
                 color = Color(dominantColor),
                 fontSize = 36.sp
             )
@@ -211,7 +212,7 @@ private fun Chip(type: String, color: Long) {
         Text(
             text = type.uppercase(),
             modifier = Modifier.padding(horizontal = 24.dp, vertical = 4.dp),
-            color = Color.Black,
+            color = Color.White,
             style = MaterialTheme.typography.bodyMedium
         )
     }
