@@ -4,6 +4,7 @@ import com.example.data.model.api.toDomainModel
 import com.example.data.repository.PokemonInfoRepository
 import com.example.data.source.remote.PokedexRemoteDataSource
 import com.example.model.entities.Characteristics
+import com.example.model.entities.MoveInfo
 import com.example.model.entities.PokemonInfo
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -22,5 +23,9 @@ class PokemonInfoRepositoryImpl @Inject constructor(
 
     override fun getPokemonCharacteristics(id: Int): Flow<Characteristics> = flow {
         remoteDataSource.getPokemonCharacteristics(id).also { emit(it.toDomainModel()) }
+    }.flowOn(dispatcher)
+
+    override fun getMoveInfo(name: String): Flow<MoveInfo> = flow {
+        remoteDataSource.getMoveInfo(name).also { emit(it.toDomainModel()) }
     }.flowOn(dispatcher)
 }

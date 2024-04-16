@@ -31,6 +31,7 @@ import com.example.pokedex.ui.info.tabs.about.AboutTab
 import com.example.pokedex.ui.info.tabs.moves.MovesTab
 import com.example.pokedex.ui.info.tabs.stats.StatsTab
 import com.example.pokedex.utils.getDominantColor
+import com.example.pokedex.utils.getSecondDominantColor
 import com.example.pokedex.utils.getViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -54,7 +55,7 @@ fun PokemonInfoScreen(navController: NavHostController, name: String) {
 }
 
 @Composable
-fun LoadingScreen() {
+private fun LoadingScreen() {
     Box(
         modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
@@ -86,13 +87,14 @@ private fun ErrorScreen(error: String = "") {
 }
 
 @Composable
-fun SuccessScreen(
+private fun SuccessScreen(
     navController: NavHostController,
     pokemonInfo: PokemonInfo,
     setErrorState: (error: String) -> Unit,
 ) {
     val systemUiController = rememberSystemUiController()
     val dominantColor = remember { mutableIntStateOf(Black.value.toInt()) }
+    val secondColor = remember { mutableIntStateOf(Black.value.toInt()) }
 
     systemUiController.setSystemBarsColor(color = Color(dominantColor.intValue))
 
@@ -103,7 +105,11 @@ fun SuccessScreen(
                 padding = padding,
                 pokemonInfo = pokemonInfo,
                 dominantColor = dominantColor.intValue,
-                onSuccess = { result -> dominantColor.intValue = getDominantColor(result) },
+                secondColor = secondColor.intValue,
+                onSuccess = { result ->
+                    dominantColor.intValue = getDominantColor(result)
+                    secondColor.intValue = getSecondDominantColor(result)
+                },
                 onError = { error -> setErrorState(error) },
             )
         }
@@ -112,7 +118,7 @@ fun SuccessScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(
+private fun TopBar(
     navController: NavHostController,
     dominantColor: MutableIntState,
     pokemonInfo: PokemonInfo,
@@ -145,10 +151,11 @@ fun TopBar(
 }
 
 @Composable
-fun Content(
+private fun Content(
     padding: PaddingValues,
     pokemonInfo: PokemonInfo,
     dominantColor: Int,
+    secondColor: Int,
     onSuccess: (result: SuccessResult) -> Unit,
     onError: (error: String) -> Unit,
 ) {
@@ -188,7 +195,7 @@ fun Content(
                 horizontalArrangement = Arrangement.Center
             ) { pokemonInfo.types.forEach { type -> Chip(type.name, type.color) } }
         }
-        TabLayout(pokemonInfo, dominantColor)
+        TabLayout(pokemonInfo, dominantColor, secondColor)
     }
 }
 
@@ -211,7 +218,7 @@ private fun Chip(type: String, color: Long) {
 }
 
 @Composable
-fun TabLayout(pokemonInfo: PokemonInfo, dominantColor: Int) {
+private fun TabLayout(pokemonInfo: PokemonInfo, dominantColor: Int, secondColor: Int) {
     val titles = listOf("About", "Stats", "Moves", "Evolutions")
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
@@ -234,7 +241,7 @@ fun TabLayout(pokemonInfo: PokemonInfo, dominantColor: Int) {
                         text = {
                             Text(
                                 text = title,
-                                color = Color(dominantColor)
+                                color = Color(secondColor)
                             )
                         },
                         selected = selectedTabIndex == index,
@@ -245,8 +252,8 @@ fun TabLayout(pokemonInfo: PokemonInfo, dominantColor: Int) {
         },
         content = { paddingValues ->
             when (selectedTabIndex) {
-                0 -> AboutTab(paddingValues, pokemonInfo, dominantColor)
-                1 -> StatsTab(paddingValues, pokemonInfo, dominantColor)
+                0 -> AboutTab(paddingValues, pokemonInfo, secondColor)
+                1 -> StatsTab(paddingValues, pokemonInfo, secondColor)
                 2 -> MovesTab(paddingValues, pokemonInfo, dominantColor)
                 3 -> {}
                 else -> throw IllegalArgumentException("Tab desconocido.")

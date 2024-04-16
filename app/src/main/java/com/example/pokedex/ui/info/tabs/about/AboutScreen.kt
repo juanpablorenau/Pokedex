@@ -1,6 +1,7 @@
 package com.example.pokedex.ui.info.tabs.about
 
 import android.graphics.Color.BLACK
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +26,7 @@ import com.example.pokedex.utils.getViewModel
 fun AboutTab(
     paddingValues: PaddingValues,
     pokemonInfo: PokemonInfo,
-    dominantColor: Int,
+    color: Int,
 ) {
     val viewModel = LocalContext.current.getViewModel<AboutViewModel>()
     val uiState: AboutUiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -37,7 +38,7 @@ fun AboutTab(
         is AboutUiState.Success -> SuccessScreen(
             paddingValues = paddingValues,
             pokemonInfo = pokemonInfo,
-            dominantColor = dominantColor,
+            color = color,
             characteristics = state.characteristics
         )
     }
@@ -45,14 +46,16 @@ fun AboutTab(
 
 @Preview(showBackground = true)
 @Composable
-fun SuccessScreen(
+private fun SuccessScreen(
     paddingValues: PaddingValues = PaddingValues(),
     pokemonInfo: PokemonInfo = PokemonInfo(),
-    dominantColor: Int = BLACK,
+    color: Int = BLACK,
     characteristics: Characteristics = Characteristics(description = "Hola"),
 ) {
     Column(
-        modifier = Modifier.padding(top = paddingValues.calculateTopPadding()),
+        modifier = Modifier
+            .padding(top = paddingValues.calculateTopPadding())
+            .background(Color.White),
     ) {
         Text(
             modifier = Modifier
@@ -84,7 +87,7 @@ fun SuccessScreen(
                 CircularProgress(
                     progress = pokemonInfo.baseExperience,
                     total = 340f,
-                    color = dominantColor,
+                    color = color,
                 )
             }
 
@@ -102,7 +105,7 @@ fun SuccessScreen(
                     progress = pokemonInfo.height,
                     total = 70f,
                     text = " m",
-                    color = dominantColor,
+                    color = color,
                 )
             }
 
@@ -120,7 +123,7 @@ fun SuccessScreen(
                     progress = pokemonInfo.weight,
                     total = 1200f,
                     text = " Kg",
-                    color = dominantColor,
+                    color = color,
                 )
             }
         }
