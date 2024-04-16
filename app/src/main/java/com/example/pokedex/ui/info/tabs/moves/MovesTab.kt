@@ -76,7 +76,12 @@ private fun SuccessScreen(
     color: Int,
     moves: List<MoveInfo>,
 ) {
-    LazyColumn(modifier = Modifier.padding(paddingValues)) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxHeight()
+            .padding(paddingValues)
+            .background(Color.White)
+    ) {
         items(moves.sortedBy { it.name }) { move ->
             ItemMove(move, color)
         }
