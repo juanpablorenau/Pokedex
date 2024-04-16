@@ -7,6 +7,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
@@ -44,6 +46,7 @@ import com.example.pokedex.R
 import com.example.pokedex.navigation.AppScreens.PokemonInfoScreen
 import com.example.pokedex.theme.Black
 import com.example.pokedex.utils.getDominantColor
+import com.example.pokedex.utils.getSecondDominantColor
 import com.example.pokedex.utils.getViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -56,13 +59,11 @@ fun PokemonsScreen(navController: NavHostController) {
         is PokemonsUiState.Loading -> LoadingScreen()
         is PokemonsUiState.Error -> ErrorScreen(state.error) { viewModel.getPokemons() }
         is PokemonsUiState.Success -> {
-            SuccessScreen(
-                navController = navController,
+            SuccessScreen(navController = navController,
                 pokemons = state.pokemons,
                 getPokemons = { viewModel.getPokemons() },
                 getPokemon = { name -> viewModel.getPokemon(name) },
-                setErrorState = { error -> viewModel.setErrorState(error) }
-            )
+                setErrorState = { error -> viewModel.setErrorState(error) })
         }
     }
 }
@@ -70,8 +71,7 @@ fun PokemonsScreen(navController: NavHostController) {
 @Composable
 private fun LoadingScreen() {
     Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(
             modifier = Modifier.width(64.dp),
@@ -113,25 +113,20 @@ private fun SuccessScreen(
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(color = Color(Color.Transparent.toArgb()))
 
-    Scaffold(
-        topBar = {
-            SearchBar(
-                scrollState = scrollState,
-                onSearch = { name -> getPokemon(name) },
-                getPokemons = { getPokemons() }
-            )
-        },
-        content = { padding ->
-            LazyColumn(
-                navController = navController,
-                getPokemons = { getPokemons() },
-                pokemons = pokemons,
-                padding = padding,
-                scrollState = scrollState,
-                setErrorState = setErrorState
-            )
-        }
-    )
+    Scaffold(topBar = {
+        SearchBar(scrollState = scrollState,
+            onSearch = { name -> getPokemon(name) },
+            getPokemons = { getPokemons() })
+    }, content = { padding ->
+        LazyColumn(
+            navController = navController,
+            getPokemons = { getPokemons() },
+            pokemons = pokemons,
+            padding = padding,
+            scrollState = scrollState,
+            setErrorState = setErrorState
+        )
+    })
 }
 
 @Composable
@@ -150,10 +145,9 @@ private fun SearchBar(
         var searchText by remember { mutableStateOf("") }
         val keyboardController = LocalSoftwareKeyboardController.current
 
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 4.dp, vertical = 8.dp),
+        OutlinedTextField(modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 4.dp, vertical = 8.dp),
             colors = TextFieldDefaults.colors(
                 unfocusedContainerColor = Color.White,
                 focusedContainerColor = Color.White,
@@ -177,8 +171,7 @@ private fun SearchBar(
                         getPokemons()
                     }
                 }
-            }
-        )
+            })
     }
 }
 
@@ -208,12 +201,10 @@ private fun LazyColumn(
         state = scrollState,
     ) {
         items(pokemons) { pokemon ->
-            ItemPokemon(
-                navController = navController,
+            ItemPokemon(navController = navController,
                 pokemon = pokemon,
                 getPokemons = { getPokemons() },
-                onError = { error -> setErrorState(error) }
-            )
+                onError = { error -> setErrorState(error) })
         }
     }
 }
@@ -227,6 +218,7 @@ private fun ItemPokemon(
 ) {
     var visible by remember { mutableStateOf(false) }
     var dominantColor by remember { mutableIntStateOf(Black.value.toInt()) }
+    var secondColor by remember { mutableIntStateOf(Color.White.value.toInt()) }
 
     val alpha by animateFloatAsState(
         targetValue = if (visible) 1f else 0.25f,
@@ -240,29 +232,33 @@ private fun ItemPokemon(
 
     val route = PokemonInfoScreen.route.plus("/" + pokemon.name)
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 4.dp, vertical = 8.dp)
-            .alpha(alpha)
-            .scale(scale)
-            .clickable {
-                getPokemons()
-                navController.navigate(route)
-            },
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(dominantColor)),
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 4.dp, vertical = 8.dp)
+        .alpha(alpha)
+        .scale(scale)
+        .background(
+            brush = Brush.linearGradient(
+                colors = listOf(Color(dominantColor), Color(secondColor))
+            ),
+            shape =  RoundedCornerShape(10.dp)
+        )
+        .clickable {
+            getPokemons()
+            navController.navigate(route)
+        }
     ) {
-        AsyncImage(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1.75f)
-                .padding(top = 16.dp),
+        AsyncImage(modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp)
+            .aspectRatio(1.75f),
             model = pokemon.url,
             contentDescription = "Pokemon image",
             onError = { error -> onError(error.result.toString()) },
-            onSuccess = { result -> dominantColor = getDominantColor(result.result) }
-        )
+            onSuccess = { result ->
+                dominantColor = getDominantColor(result.result)
+                secondColor = getSecondDominantColor(result.result)
+            })
         Text(
             modifier = Modifier
                 .padding(vertical = 16.dp)
