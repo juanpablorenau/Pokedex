@@ -61,7 +61,8 @@ private fun SuccessScreen(
             modifier = Modifier
                 .wrapContentHeight(align = Alignment.CenterVertically)
                 .weight(0.33f)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
             text = characteristics.description.addQuotationMarks(),
             color = Color(BLACK),
             fontSize = 26.sp,
