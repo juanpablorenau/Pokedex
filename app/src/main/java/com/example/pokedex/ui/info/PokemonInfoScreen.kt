@@ -41,7 +41,7 @@ fun PokemonInfoScreen(navController: NavHostController, name: String) {
     val viewModel = LocalContext.current.getViewModel<PokemonInfoViewModel>()
     val uiState: PokemonInfoUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    viewModel.getPokemonInfo(name)
+    LaunchedEffect(Unit) { viewModel.getPokemonInfo(name) }
 
     when (val state = uiState) {
         is PokemonInfoUiState.Loading -> LoadingScreen()
