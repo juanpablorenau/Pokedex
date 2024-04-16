@@ -24,11 +24,12 @@ import com.example.model.entities.PokemonInfo
 fun StatsTab(
     paddingValues: PaddingValues,
     pokemonInfo: PokemonInfo,
-    dominantColor: Int,
+    color: Int,
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .background(Color.White)
             .padding(top = paddingValues.calculateTopPadding() + 16.dp, start = 12.dp, end = 12.dp)
     ) {
         pokemonInfo.stats.forEach { stat ->
@@ -49,21 +50,21 @@ fun StatsTab(
                     textAlign = TextAlign.Center,
                 )
 
-                ShowProgress(stat.baseStat, dominantColor, 1000)
+                ShowProgress(stat.baseStat, color)
             }
         }
     }
 }
 
 @Composable
-fun ShowProgress(score: Int = 100, dominantColor: Int, durationMillis: Int = 1000) {
-    val gradient = Brush.linearGradient(listOf(Color(dominantColor), Color.Gray))
+private  fun ShowProgress(score: Int = 100, color: Int) {
+    val gradient = Brush.linearGradient(listOf(Color(color), Color.Gray))
     val progressFactor = remember { Animatable(0f) }
 
     LaunchedEffect(score) {
         progressFactor.animateTo(
             targetValue = score * 0.0075f,
-            animationSpec = tween(durationMillis = durationMillis)
+            animationSpec = tween(durationMillis = 1000)
         )
     }
 

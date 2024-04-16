@@ -13,6 +13,7 @@ data class PokemonInfoApiModel(
     @SerializedName("types") val types: List<TypeApiModel>,
     @SerializedName("base_experience") val baseExperience: Int,
     @SerializedName("stats") val stats: List<StatApiModel>,
+    @SerializedName("moves") val moves: List<MoveApiModel>,
 ) {
 
     fun getImageUrl() =
@@ -25,7 +26,10 @@ data class PokemonInfoApiModel(
             PokemonType.UNKNOWN
         }
     }
+
     fun getPokemonStats() = stats.map { Stat(name = it.getStatName(), baseStat = it.baseState) }
+
+    fun getPokemonMoves() = moves.map { it.move.name }
 }
 
 fun PokemonInfoApiModel.toDomainModel() = PokemonInfo(
@@ -36,5 +40,6 @@ fun PokemonInfoApiModel.toDomainModel() = PokemonInfo(
     url = getImageUrl(),
     types = getPokemonTypes(),
     baseExperience = baseExperience,
-    stats = getPokemonStats()
+    stats = getPokemonStats(),
+    moves = getPokemonMoves()
 )

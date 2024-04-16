@@ -100,7 +100,7 @@ private fun ErrorScreen(error: String = "", getPokemons: () -> Unit) {
 }
 
 @Composable
-fun SuccessScreen(
+private fun SuccessScreen(
     navController: NavHostController,
     pokemons: List<Pokemon>,
     getPokemons: () -> Unit,
@@ -134,7 +134,7 @@ fun SuccessScreen(
 }
 
 @Composable
-fun SearchBar(
+private fun SearchBar(
     scrollState: LazyListState,
     onSearch: (String) -> Unit,
     getPokemons: () -> Unit,
@@ -182,7 +182,7 @@ fun SearchBar(
 }
 
 @Composable
-fun CloseIcon(onClick: () -> Unit) {
+private fun CloseIcon(onClick: () -> Unit) {
     Icon(
         imageVector = Icons.Default.Close,
         contentDescription = stringResource(R.string.close),
@@ -194,7 +194,7 @@ fun CloseIcon(onClick: () -> Unit) {
 }
 
 @Composable
-fun LazyColumn(
+private fun LazyColumn(
     navController: NavHostController,
     pokemons: List<Pokemon>,
     padding: PaddingValues,
@@ -218,7 +218,7 @@ fun LazyColumn(
 }
 
 @Composable
-fun ItemPokemon(
+private fun ItemPokemon(
     navController: NavHostController,
     pokemon: Pokemon,
     onError: (error: String) -> Unit,

@@ -2,6 +2,7 @@ package com.example.data.source.remote.api
 
 import com.example.data.model.api.ApiResponse
 import com.example.data.model.api.CharacteristicsApiModel
+import com.example.data.model.api.MoveInfoApiModel
 import com.example.data.model.api.PokemonApiModel
 import com.example.data.model.api.PokemonInfoApiModel
 import retrofit2.Response
@@ -26,4 +27,9 @@ interface PokedexApi {
     suspend fun getPokemonCharacteristics(
         @Path("id") id: Int,
     ): Response<CharacteristicsApiModel>
+
+    @GET("move/{name}")
+    suspend fun getMoveInfo(
+        @Path("name") name: String,
+    ): Response<MoveInfoApiModel>
 }
