@@ -2,6 +2,7 @@ package com.example.data.source.local.impl
 
 import com.example.data.model.room.MoveInfoDbModel
 import com.example.data.model.room.PokemonDbModel
+import com.example.data.model.room.PokemonInfoEmbedded
 import com.example.data.source.local.PokedexLocalDataSource
 import com.example.data.source.local.dao.PokedexDao
 import kotlinx.coroutines.CoroutineDispatcher
@@ -23,7 +24,14 @@ class PokedexLocalDataSourceImpl @Inject constructor(
         withContext(dispatcher) { pokedexDao.insertPokemons(pokemons) }
     }
 
-    override suspend fun getMoveInfo(name: String): MoveInfoDbModel =
+    override suspend fun getPokemonInfo(name: String): PokemonInfoEmbedded? =
+        withContext(dispatcher) { pokedexDao.getPokemonInfo(name) }
+
+    override suspend fun insertPokemonInfo(pokemonInfo: PokemonInfoEmbedded) {
+        withContext(dispatcher) { pokedexDao.insertPokemonInfo(pokemonInfo) }
+    }
+
+    override suspend fun getMoveInfo(name: String): MoveInfoDbModel? =
         withContext(dispatcher) { pokedexDao.getMoveInfo(name) }
 
     override suspend fun insertMoveInfo(move: MoveInfoDbModel) {

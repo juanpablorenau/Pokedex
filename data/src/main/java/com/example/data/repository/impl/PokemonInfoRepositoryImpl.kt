@@ -22,7 +22,16 @@ class PokemonInfoRepositoryImpl @Inject constructor(
 ) : PokemonInfoRepository {
 
     override fun getPokemonInfo(name: String): Flow<PokemonInfo> = flow {
-        remoteDataSource.getPokemonInfo(name).also { emit(it.toDomainModel()) }
+        val localPokemonInfo = localDataSource.getPokemonInfo(name)
+        if (localPokemonInfo == null) {
+            remoteDataSource.getPokemonInfo(name).toDomainModel().also { pokemonInfo ->
+                localDataSource.insertPokemonInfo(pokemonInfo.toDbModel())
+                emit(pokemonInfo)
+            }
+        } else {
+            emit(localPokemonInfo.toDomainModel())
+        }
+
     }.flowOn(dispatcher)
 
     override fun getPokemonCharacteristics(id: Int): Flow<Characteristics> = flow {
