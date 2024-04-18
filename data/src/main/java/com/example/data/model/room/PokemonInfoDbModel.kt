@@ -11,16 +11,16 @@ data class PokemonInfoDbModel(
         entityColumn = "pokemonId"
     )
     val types: List<PokemonTypeDbModel>,
-    /*    @Relation(
-            parentColumn = "id",
-            entityColumn = "pokemonId"
-        )
-        val moves: List<MoveDbModel>,
-        @Relation(
-            parentColumn = "id",
-            entityColumn = "pokemonId"
-        )
-        val stats: List<StatDbModel>,*/
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "pokemonId"
+    )
+    val moves: List<MoveDbModel>,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "pokemonId"
+    )
+    val stats: List<StatDbModel>,
 )
 
 
@@ -32,8 +32,8 @@ fun PokemonInfoDbModel.toDomainModel() = PokemonInfo(
     url = pokemon.url,
     baseExperience = pokemon.baseExperience,
     types = types.map { it.toDomainModel() },
-    /* moves = moves.map { it.name },
-     stats = stats.map { it.toDomainModel() },*/
+    moves = moves.map { it.toDomainModel() },
+    stats = stats.map { it.toDomainModel() },
 )
 
 fun PokemonInfo.toDbModel() = PokemonInfoDbModel(
@@ -46,6 +46,6 @@ fun PokemonInfo.toDbModel() = PokemonInfoDbModel(
         baseExperience = baseExperience
     ),
     types = types.map { it.toDbModel(id) },
-    /* moves = moves.map { MoveDbModel(id, it) },
-     stats = stats.map { it.toDbModel(id) }*/
+    moves = moves.map { it.toDbModel(id) },
+    stats = stats.map { it.toDbModel(id) }
 )
