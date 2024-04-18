@@ -1,7 +1,10 @@
 package com.example.data.repository.impl
 
 import com.example.data.model.api.toDomainModel
+import com.example.data.model.room.toDbModel
+import com.example.data.model.room.toDomainModel
 import com.example.data.repository.PokemonInfoRepository
+import com.example.data.source.local.PokedexLocalDataSource
 import com.example.data.source.remote.PokedexRemoteDataSource
 import com.example.model.entities.Characteristics
 import com.example.model.entities.MoveInfo
@@ -14,11 +17,21 @@ import javax.inject.Inject
 
 class PokemonInfoRepositoryImpl @Inject constructor(
     private val remoteDataSource: PokedexRemoteDataSource,
+    private val localDataSource: PokedexLocalDataSource,
     private val dispatcher: CoroutineDispatcher,
 ) : PokemonInfoRepository {
 
     override fun getPokemonInfo(name: String): Flow<PokemonInfo> = flow {
-        remoteDataSource.getPokemonInfo(name).also { emit(it.toDomainModel()) }
+        val localPokemonInfo = localDataSource.getPokemonInfo(name)
+        if (localPokemonInfo == null) {
+            remoteDataSource.getPokemonInfo(name).toDomainModel().also { pokemonInfo ->
+                localDataSource.insertPokemonInfo(pokemonInfo.toDbModel())
+                emit(pokemonInfo)
+            }
+        } else {
+            emit(localPokemonInfo.toDomainModel())
+        }
+
     }.flowOn(dispatcher)
 
     override fun getPokemonCharacteristics(id: Int): Flow<Characteristics> = flow {
@@ -26,6 +39,14 @@ class PokemonInfoRepositoryImpl @Inject constructor(
     }.flowOn(dispatcher)
 
     override fun getMoveInfo(name: String): Flow<MoveInfo> = flow {
-        remoteDataSource.getMoveInfo(name).also { emit(it.toDomainModel()) }
+        val localMove = localDataSource.getMoveInfo(name)
+        if (localMove == null) {
+            remoteDataSource.getMoveInfo(name).toDomainModel().also { move ->
+                localDataSource.insertMoveInfo(move.toDbModel())
+                emit(move)
+            }
+        } else {
+            emit(localMove.toDomainModel())
+        }
     }.flowOn(dispatcher)
 }

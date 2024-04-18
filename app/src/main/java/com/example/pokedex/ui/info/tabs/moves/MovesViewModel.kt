@@ -44,6 +44,10 @@ class MovesViewModel @Inject constructor(
         }
     }
 
+    fun setLoadingState() {
+        _uiState.value = MovesUiState.Loading
+    }
+
     private fun setSuccessState(moves: List<MoveInfo>) {
         _uiState.value = MovesUiState.Success(moves)
     }

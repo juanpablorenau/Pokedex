@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,7 +32,7 @@ fun AboutTab(
     val viewModel = LocalContext.current.getViewModel<AboutViewModel>()
     val uiState: AboutUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    viewModel.getCharacteristics(pokemonInfo.id)
+    LaunchedEffect(Unit) { viewModel.getCharacteristics(pokemonInfo.id) }
 
     when (val state = uiState) {
         is AboutUiState.Loading -> {}
