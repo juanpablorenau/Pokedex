@@ -1,7 +1,7 @@
 package com.example.data.model.api
 
 import com.example.model.entities.MoveInfo
-import com.example.model.entities.enums.PokemonType
+import com.example.model.entities.enums.getPokemonType
 import com.google.gson.annotations.SerializedName
 
 data class MoveApiModel(
@@ -17,13 +17,6 @@ data class MoveInfoApiModel(
     @SerializedName("type") val type: TypeInfoApiModel,
     @SerializedName("effect_entries") val effects: List<EffectApiModel>,
 ) {
-    fun getMoveType() =
-        try {
-            PokemonType.valueOf(type.name.uppercase())
-        } catch (e: IllegalArgumentException) {
-            PokemonType.UNKNOWN
-        }
-
     fun getMoveEffects() =
         effects.filter { it.languageApiModel.name == "EN" }.map { it.effect }
 }
@@ -39,6 +32,6 @@ fun MoveInfoApiModel.toDomainModel() = MoveInfo(
     accuracy = accuracy,
     power = power,
     pp = pp,
-    type = getMoveType(),
+    type = getPokemonType(type.name),
     effects = getMoveEffects()
 )

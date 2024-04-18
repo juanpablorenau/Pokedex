@@ -27,6 +27,8 @@ class RepositoryModule {
     @Provides
     fun providesPokemonInfoRepository(
         pokedexRemoteDataSource: PokedexRemoteDataSource,
+        pokedexLocalDataSource: PokedexLocalDataSource,
         dispatcher: CoroutineDispatcher,
-    ): PokemonInfoRepository = PokemonInfoRepositoryImpl(pokedexRemoteDataSource, dispatcher)
+    ): PokemonInfoRepository =
+        PokemonInfoRepositoryImpl(pokedexRemoteDataSource, pokedexLocalDataSource, dispatcher)
 }

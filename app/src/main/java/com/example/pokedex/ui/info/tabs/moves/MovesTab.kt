@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,7 +35,10 @@ fun MovesTab(
     val viewModel = LocalContext.current.getViewModel<MovesViewModel>()
     val uiState: MovesUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    viewModel.getMovesInfo(pokemonInfo.moves)
+    LaunchedEffect(Unit) {
+        viewModel.setLoadingState()
+        viewModel.getMovesInfo(pokemonInfo.moves)
+    }
 
     when (val state = uiState) {
         is MovesUiState.Loading -> LoadingScreen(color)

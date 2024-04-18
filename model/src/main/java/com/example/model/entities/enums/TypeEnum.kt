@@ -22,3 +22,10 @@ enum class PokemonType(val type: String, val color: Long) {
     UNKNOWN("unknown", 0xFF68A090),
     WATER("water", 0xFF6890F0)
 }
+
+fun getPokemonType(type: String) =
+    try {
+        PokemonType.valueOf(type.uppercase())
+    } catch (e: IllegalArgumentException) {
+        PokemonType.UNKNOWN
+    }
