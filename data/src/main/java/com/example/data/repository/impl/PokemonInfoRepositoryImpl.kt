@@ -25,7 +25,6 @@ class PokemonInfoRepositoryImpl @Inject constructor(
         val localPokemonInfo = localDataSource.getPokemonInfo(name)
         if (localPokemonInfo == null) {
             remoteDataSource.getPokemonInfo(name).toDomainModel().also { pokemonInfo ->
-                localDataSource.insertPokemonInfo(pokemonInfo.toDbModel())
                 emit(pokemonInfo)
             }
         } else {

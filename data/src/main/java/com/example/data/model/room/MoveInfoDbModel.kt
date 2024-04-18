@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.example.model.entities.MoveInfo
 import com.example.model.entities.enums.PokemonType
 
-@Entity(tableName = "Moves")
+@Entity(tableName = "MovesInfo")
 data class MoveInfoDbModel(
     @PrimaryKey val id: Int,
     @ColumnInfo("name") val name: String,
