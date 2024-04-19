@@ -1,5 +1,6 @@
 package com.example.pokedex.ui.info.tabs.moves
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,11 +16,11 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.model.entities.MoveInfo
 import com.example.model.entities.PokemonInfo
@@ -125,22 +126,24 @@ private fun ItemMove(move: MoveInfo = MoveInfo(), color: Int = Color.LightGray.t
                 color = Color(move.type.color)
             )
 
-
             Card(
                 modifier = Modifier
-                    .shadow(4.dp, RoundedCornerShape(12.dp))
-                    .weight(0.22f),
+                    .shadow(4.dp, RoundedCornerShape(24.dp))
+                    .wrapContentSize(),
                 shape = RoundedCornerShape(12.dp),
                 colors = CardDefaults.cardColors().copy(containerColor = Color(move.type.color)),
             ) {
-                Text(
+                val context = LocalContext.current
+                val resourceId = context.resources.getIdentifier(
+                    move.type.name.lowercase(), "drawable", context.packageName
+                )
+
+                Image(
                     modifier = Modifier
-                        .padding(horizontal = 4.dp, vertical = 4.dp)
-                        .fillMaxWidth(),
-                    text = move.type.name,
-                    textAlign = TextAlign.Center,
-                    color = Color.White,
-                    fontSize = 12.sp,
+                        .padding(8.dp)
+                        .size(20.dp),
+                    painter = painterResource(id = resourceId),
+                    contentDescription = "typeImage"
                 )
             }
         }
