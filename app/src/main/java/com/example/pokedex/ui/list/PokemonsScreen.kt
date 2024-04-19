@@ -43,6 +43,7 @@ import coil.compose.AsyncImage
 import com.example.model.entities.Pokemon
 import com.example.model.utils.uppercaseFirstChar
 import com.example.pokedex.R
+import com.example.pokedex.components.isScrollingUp
 import com.example.pokedex.navigation.AppScreens.PokemonInfoScreen
 import com.example.pokedex.theme.Black
 import com.example.pokedex.utils.getDominantColor
@@ -135,10 +136,8 @@ private fun SearchBar(
     onSearch: (String) -> Unit,
     getPokemons: () -> Unit,
 ) {
-    val isSearchBarVisible by remember { derivedStateOf { !scrollState.isScrollInProgress } }
-
     AnimatedVisibility(
-        visible = isSearchBarVisible,
+        visible = scrollState.isScrollingUp(),
         enter = slideInVertically(initialOffsetY = { -400 }),
         exit = slideOutVertically(targetOffsetY = { -40 })
     ) {
@@ -147,7 +146,7 @@ private fun SearchBar(
 
         OutlinedTextField(modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 4.dp, vertical = 8.dp),
+            .padding(horizontal = 8.dp, vertical = 8.dp),
             colors = TextFieldDefaults.colors(
                 unfocusedContainerColor = Color.White,
                 focusedContainerColor = Color.White,
@@ -234,24 +233,22 @@ private fun ItemPokemon(
 
     Column(modifier = Modifier
         .fillMaxWidth()
-        .padding(horizontal = 4.dp, vertical = 8.dp)
+        .padding(horizontal = 4.dp, vertical = 4.dp)
         .alpha(alpha)
         .scale(scale)
         .background(
             brush = Brush.linearGradient(
                 colors = listOf(Color(dominantColor), Color(secondColor))
-            ),
-            shape =  RoundedCornerShape(10.dp)
+            ), shape = RoundedCornerShape(10.dp)
         )
         .clickable {
             getPokemons()
             navController.navigate(route)
-        }
-    ) {
+        }) {
         AsyncImage(modifier = Modifier
             .fillMaxWidth()
             .padding(top = 16.dp)
-            .aspectRatio(1.75f),
+            .aspectRatio(2.5f),
             model = pokemon.url,
             contentDescription = "Pokemon image",
             onError = { error -> onError(error.result.toString()) },
@@ -264,7 +261,7 @@ private fun ItemPokemon(
                 .padding(vertical = 16.dp)
                 .align(Alignment.CenterHorizontally),
             text = pokemon.name.uppercaseFirstChar(),
-            fontSize = 36.sp,
+            fontSize = 32.sp,
             color = Color.White,
             fontWeight = FontWeight.Bold,
         )
