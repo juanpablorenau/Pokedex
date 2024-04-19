@@ -240,7 +240,7 @@ private fun Chip(pokemonType: PokemonType = PokemonType.BUG) {
 
 @Composable
 private fun TabLayout(pokemonInfo: PokemonInfo, dominantColor: Int, secondColor: Int) {
-    val titles = listOf("About", "Stats", "Moves", "Evolutions")
+    val titles = listOf("About", "Stats", "Moves")
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
     Scaffold(
@@ -276,7 +276,6 @@ private fun TabLayout(pokemonInfo: PokemonInfo, dominantColor: Int, secondColor:
                 0 -> AboutTab(paddingValues, pokemonInfo, secondColor)
                 1 -> StatsTab(paddingValues, pokemonInfo, secondColor)
                 2 -> MovesTab(paddingValues, pokemonInfo, dominantColor)
-                3 -> {}
                 else -> throw IllegalArgumentException("Tab desconocido.")
             }
         }
