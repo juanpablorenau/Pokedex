@@ -18,3 +18,12 @@ The application has been built following these principles and patterns:
 - **Room**: Room is used for data persistence in the application.
 - **Retrofit**: Retrofit is used for calls to the Rick and Morty API.
 - **Animations**: They create a more polished and engaging interface, making interactions intuitive and enjoyable for users
+
+## Images
+<img width="236" alt="image" src="https://github.com/juanpablorenau/Pokedex/assets/86953862/89c532b9-d48e-4fa8-9956-6f1d0b4831d5">
+<img width="236" alt="image" src="https://github.com/juanpablorenau/Pokedex/assets/86953862/02773aa4-422e-4877-a7f0-7ad26865d63a">
+<img width="237" alt="image" src="https://github.com/juanpablorenau/Pokedex/assets/86953862/5d89969f-15dc-4134-acd7-ec9897838229">
+<img width="234" alt="image" src="https://github.com/juanpablorenau/Pokedex/assets/86953862/5d1098aa-e9ff-4ccb-831e-462d84b3bdaa">
+
+
+
