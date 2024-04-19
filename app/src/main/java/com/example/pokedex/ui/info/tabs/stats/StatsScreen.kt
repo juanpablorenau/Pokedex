@@ -5,7 +5,9 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,7 +33,12 @@ fun StatsTab(
             .fillMaxWidth()
             .fillMaxHeight()
             .background(Color.White)
-            .padding(top = paddingValues.calculateTopPadding() + 16.dp, start = 12.dp, end = 12.dp)
+            .padding(
+                top = paddingValues.calculateTopPadding() + 16.dp,
+                start = 12.dp,
+                end = 12.dp
+            )
+            .verticalScroll(rememberScrollState())
     ) {
         pokemonInfo.stats.forEach { stat ->
             Row(
@@ -58,7 +65,7 @@ fun StatsTab(
 }
 
 @Composable
-private  fun ShowProgress(score: Int = 100, color: Int) {
+private fun ShowProgress(score: Int = 100, color: Int) {
     val gradient = Brush.linearGradient(listOf(Color(color), Color.Gray))
     val progressFactor = remember { Animatable(0f) }
 
