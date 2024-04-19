@@ -8,6 +8,6 @@ data class MoveInfo(
     val accuracy: Int = 0,
     val power: Int = 0,
     val pp: Int = 0,
-    val type: PokemonType = PokemonType.BUG,
+    val type: PokemonType = PokemonType.FIGHTING,
     val effects: List<String> = listOf("Es peligroso"),
 )

@@ -1,5 +1,6 @@
 package com.example.pokedex.ui.info
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,6 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -24,6 +26,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.SuccessResult
 import com.example.model.entities.PokemonInfo
+import com.example.model.entities.enums.PokemonType
 import com.example.model.entities.getFormattedId
 import com.example.model.utils.uppercaseFirstChar
 import com.example.pokedex.R
@@ -194,33 +197,50 @@ private fun Content(
                     .fillMaxWidth()
                     .padding(vertical = 16.dp),
                 horizontalArrangement = Arrangement.Center
-            ) { pokemonInfo.types.forEach { type -> Chip(type.name, type.color) } }
+            ) { pokemonInfo.types.forEach { type -> Chip(type) } }
         }
         TabLayout(pokemonInfo, dominantColor, secondColor)
     }
 }
 
+@Preview
 @Composable
-private fun Chip(type: String, color: Long) {
+private fun Chip(pokemonType: PokemonType = PokemonType.BUG) {
+    val context = LocalContext.current
+    val resourceId = context.resources.getIdentifier(
+        pokemonType.name.lowercase(),
+        "drawable",
+        context.packageName
+    )
     Card(
         modifier = Modifier
             .padding(8.dp)
             .shadow(4.dp, RoundedCornerShape(12.dp)),
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors().copy(containerColor = Color(color)),
+        colors = CardDefaults.cardColors().copy(containerColor = Color(pokemonType.color)),
     ) {
-        Text(
-            text = type.uppercase(),
-            modifier = Modifier.padding(horizontal = 24.dp, vertical = 4.dp),
-            color = Color.White,
-            style = MaterialTheme.typography.bodyMedium
-        )
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = pokemonType.type.uppercase(),
+                color = Color.White,
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Image(
+                modifier = Modifier.size(20.dp).padding(start = 8.dp),
+                painter = painterResource(id = resourceId),
+                contentDescription = "typeImage"
+            )
+        }
     }
 }
 
 @Composable
 private fun TabLayout(pokemonInfo: PokemonInfo, dominantColor: Int, secondColor: Int) {
-    val titles = listOf("About", "Stats", "Moves", "Evolutions")
+    val titles = listOf("About", "Stats", "Moves")
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
     Scaffold(
@@ -256,7 +276,6 @@ private fun TabLayout(pokemonInfo: PokemonInfo, dominantColor: Int, secondColor:
                 0 -> AboutTab(paddingValues, pokemonInfo, secondColor)
                 1 -> StatsTab(paddingValues, pokemonInfo, secondColor)
                 2 -> MovesTab(paddingValues, pokemonInfo, dominantColor)
-                3 -> {}
                 else -> throw IllegalArgumentException("Tab desconocido.")
             }
         }
